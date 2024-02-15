@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>   
+<databaseChangeLog
+   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+      http://www.liquibase.org/xml/ns/pro 
+      http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">  
+
+    <include file="./changesets/1-setup.sql"/>  
+    <include file="./changesets/2-foreign-keys.sql"/>  
+    <include file="./changesets/3-register-user-procedure.sql"/>  
+    <include file="./changesets/4-users-privileges.sql"/>  
+    <include file="./changesets/5-get-user-data.sql"/>
+    <include file="./changesets/6-add-connection.sql"/>
+    <include file="./changesets/7-remove-connection.sql"/>
+    <include file="./changesets/8-get-connections.sql"/>
+    <include file="./changesets/9-add-message.sql"/>
+    <include file="./changesets/10-remove-message.sql"/>
+    <include file="./changesets/11-get-messages.sql"/>
+    <include file="./changesets/12-timestamp-as-integer.sql"/>
+
+</databaseChangeLog> 

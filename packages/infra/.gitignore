@@ -1,0 +1,7 @@
+.terraform
+vars.auto.tfvars
+archives
+node_modules
+private.key
+.DS_Store
+liquibase.properties

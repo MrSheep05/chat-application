@@ -1,0 +1,10 @@
+{
+  "name": "@chat-lambdas-libs/jwt",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "@chat-lambdas-libs/kms": "^1.0.0"
+  }
+}

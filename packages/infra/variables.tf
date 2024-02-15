@@ -1,0 +1,3 @@
+variable "salt" {
+  type = string
+}

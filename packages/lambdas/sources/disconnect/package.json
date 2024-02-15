@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "name": "@chat-lambdas/disconnect",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@chat-lambdas-libs/database": "^1.0.0"
+  }
+}

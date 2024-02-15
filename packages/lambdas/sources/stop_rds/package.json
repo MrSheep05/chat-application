@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "name": "@chat-lambdas/stop_rds",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-rds": "3.484.0"
+  }
+}

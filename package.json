@@ -1,0 +1,13 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "description": "Chat Application",
+  "author": "Filip Wachowski",
+  "contributors": [
+    {
+      "name": "Tomasz Przytuła",
+      "url": "https://github.com/tprzytula/"
+    }
+  ],
+  "license": "ISC"
+}

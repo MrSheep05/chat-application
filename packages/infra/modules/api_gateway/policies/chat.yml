@@ -1,0 +1,327 @@
+openapi: 3.0.1
+info:
+  title: Chat
+  description: |
+    API for Chat
+  version: "1.0"
+paths:
+  /register:
+    post:
+      tags:
+        - account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/details"
+        required: true
+      x-amazon-apigateway-request-validator: Validate body
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: AWS_PROXY
+        uri: ${login_lambda_invoke_arn}
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+      responses:
+        201:
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          description: Account created successfully
+        400:
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          description: Username or Password provided incorrectly
+        409:
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          description: Provided Username currently exist
+          content:
+            application/json:
+              schema:
+                title: "Username already exists"
+                type: "object"
+                properties:
+                  message:
+                    type: "string"
+  /login:
+    post:
+      tags:
+        - session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/details"
+        required: true
+      x-amazon-apigateway-request-validator: Validate body
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: AWS_PROXY
+        uri: ${login_lambda_invoke_arn}
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+      responses:
+        200:
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - jwt
+                properties:
+                  jwt:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJmaWxpcCIsImlhdCI6MTUxNjIzOTAyMn0.juICRWRnj0jJxs8xSmyc6-SNCja6zrnmuuApulgpN18
+        400:
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          description: Username or Password are incorrect
+  /refresh:
+    post:
+      tags:
+        - session
+      requestBody:
+        content:
+          application/json:
+            schema:
+              title: Refreshing token
+              type: object
+              required:
+                - token
+                - refreshToken
+              properties:
+                token:
+                  type: string
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJmaWxpcCIsImlhdCI6MTUxNjIzOTAyMn0.juICRWRnj0jJxs8xSmyc6-SNCja6zrnmuuApulgpN18
+                refreshToken:
+                  type: string
+                  example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJmaWxpcCIsImlhdCI6MTUxNjIzOTAyMn0.juICRWRnj0jJxs8xSmyc6-SNCja6zrnmuuApulgpN18
+        required: true
+      x-amazon-apigateway-request-validator: Validate body
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: AWS_PROXY
+        uri: ${refresh_lambda_invoke_arn}
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+      responses:
+        200:
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - jwt
+                  - refreshToken
+                properties:
+                  jwt:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJmaWxpcCIsImlhdCI6MTUxNjIzOTAyMn0.juICRWRnj0jJxs8xSmyc6-SNCja6zrnmuuApulgpN18
+                  refreshToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJmaWxpcCIsImlhdCI6MTUxNjIzOTAyMn0.juICRWRnj0jJxs8xSmyc6-SNCja6zrnmuuApulgpN18
+        401:
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          description: Unauthorized
+  /database/start:
+    post:
+      tags:
+        - database
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: AWS_PROXY
+        uri: ${start_rds_lambda_invoke_arn}
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+      responses:
+        200:
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          description: Successful response
+        401:
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          description: Unauthorized
+  /database/stop:
+    post:
+      tags:
+        - database
+      x-amazon-apigateway-integration:
+        httpMethod: POST
+        type: AWS_PROXY
+        uri: ${stop_rds_lambda_invoke_arn}
+        passthroughBehavior: when_no_match
+        contentHandling: CONVERT_TO_TEXT
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'"
+              method.response.header.Access-Control-Allow-Methods: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+            responseTemplates:
+              application/json: |
+                {}
+      responses:
+        200:
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          description: Successful response
+        401:
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+          description: Unauthorized
+components:
+  schemas:
+    details:
+      title: User details
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+          example: filip
+        password:
+          type: string
+          example: qwerty
+x-amazon-apigateway-request-validators:
+  Validate body:
+    validateRequestParameters: false
+    validateRequestBody: true
