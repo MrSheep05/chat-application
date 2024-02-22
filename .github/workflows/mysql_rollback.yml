@@ -1,17 +1,22 @@
-name: Validate MYSQL
+name: Rollback MYSQL
 
 on:
-  pull_request:
-    paths:
-      - "packages/mysql/**"
+  workflow_dispatch:
+    inputs:
+      count:
+        type: string
+        description: Amount of changes to rollback
+        required: true
 
 jobs:
-  validate:
+  rollback:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - uses: liquibase-github-actions/validate@v4.25.1
+      - uses: liquibase-github-actions/rollback-count@v4.25.1
         with:
+          count: ${{ github.event.inputs.count }}
           driver: com.mysql.cj.jdbc.Driver
           classpath: packages/mysql/lib/mysql-connector-j-8.0.33.jar
           changelogFile: "changelog.xml"
