@@ -1,19 +1,26 @@
+import { Handler } from "aws-lambda";
 import { queryProcedure } from "@chat-lambdas-libs/database";
 
-const addConnectionId = async ({ userId, connectionId }) => {
+const addConnectionId = async ({
+  userId,
+  connectionId,
+}: {
+  userId: string;
+  connectionId: string;
+}) => {
   return await queryProcedure({
     name: "AddConnection",
     params: [userId, connectionId],
   });
 };
 
-const getTokenSubject = (token) => {
+const getTokenSubject = (token: string) => {
   const [, payload] = token.split(".");
 
   return JSON.parse(Buffer.from(payload, "base64url").toString()).sub;
 };
 
-export const handler = async (event, _context, callback) => {
+export const handler: Handler = async (event, _context, callback) => {
   console.info("event:", event);
 
   const { connectionId } = event.requestContext;

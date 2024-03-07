@@ -1,3 +1,4 @@
+import { ProcedureCallPacket } from "mysql2";
 import { connect } from "./rds";
 import type { QueryProcedureFn } from "./types";
 
@@ -6,7 +7,7 @@ const PARAMETER_TYPES = {
   OUT: "out",
 };
 
-const parseParamsToSQL = (params, type = PARAMETER_TYPES.IN) =>
+const parseParamsToSQL = (params: any[], type = PARAMETER_TYPES.IN) =>
   params
     .map((param) => (type === PARAMETER_TYPES.IN ? `'${param}'` : `@${param}`))
     .join(", ");
@@ -16,7 +17,7 @@ export const queryProcedure: QueryProcedureFn = async ({
   params = [],
   outputs = [],
 }) => {
-  const connection = (await connect()) as any;
+  const connection = await connect();
   const paramsSQL = parseParamsToSQL(params);
   const outputsSQL = parseParamsToSQL(outputs, PARAMETER_TYPES.OUT);
   console.log("paramsSQL", paramsSQL);
@@ -39,13 +40,16 @@ export const queryProcedure: QueryProcedureFn = async ({
   });
 };
 
-export const getOutput = (queryResult, outputKey) => {
+export const getOutput = <R>(
+  queryResult: { results: ProcedureCallPacket },
+  outputKey: string
+): R | null => {
   const { results } = queryResult;
 
   return findOutput(results, outputKey);
 };
 
-const findOutput = (data, key) => {
+const findOutput = <R>(data: any, key: string): R | null => {
   if (key in data) {
     return data[key];
   }

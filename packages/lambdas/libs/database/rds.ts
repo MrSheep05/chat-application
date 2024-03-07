@@ -1,5 +1,5 @@
 import { Signer } from "@aws-sdk/rds-signer";
-import mysql from "mysql2";
+import mysql, { Connection } from "mysql2";
 
 const DATABASE_HOST = "tprzytula.c9d131dccpig.eu-west-2.rds.amazonaws.com";
 const DATABASE_PORT = 3306;
@@ -13,7 +13,7 @@ const signer = new Signer({
   username: USERNAME,
 });
 
-export const connect = () => {
+export const connect = (): Promise<Connection> => {
   return new Promise(async (resolve, reject) => {
     const token = await signer.getAuthToken();
     const connection = mysql.createConnection({
