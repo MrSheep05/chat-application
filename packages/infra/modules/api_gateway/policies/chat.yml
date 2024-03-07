@@ -19,7 +19,7 @@ paths:
       x-amazon-apigateway-integration:
         httpMethod: POST
         type: AWS_PROXY
-        uri: ${login_lambda_invoke_arn}
+        uri: ${register_lambda_invoke_arn}
         passthroughBehavior: when_no_match
         contentHandling: CONVERT_TO_TEXT
         responses:
