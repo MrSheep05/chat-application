@@ -2,7 +2,10 @@
   "name": "chat",
   "version": "1.0.0",
   "description": "Chat Application",
-  "author": "Filip Wachowski",
+  "authors": [
+    "Filip Wachowski",
+    "Tomasz Przytuła"
+  ],
   "contributors": [
     {
       "name": "Tomasz Przytuła",

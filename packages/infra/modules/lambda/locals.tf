@@ -94,7 +94,7 @@ locals {
     }
     "get_messages" = {
       allow_api_gateway_execution = "false"
-      route_key                   = "get_messages"
+      route_key                   = "getMessages"
       environment_variables       = {}
       permissions = {
         kms                = "none"
