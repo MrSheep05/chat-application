@@ -165,6 +165,7 @@ export const getOutput = <R>(
 
 const findOutput = <R>(data: any, key: string): R | null => {
   if (key in data) {
+    console.log("Found data", data[key]);
     return data[key];
   }
 
