@@ -5,6 +5,10 @@
   "license": "MIT",
   "dependencies": {
     "@chat-lambdas-libs/database": "1.0.0",
-    "@chat-lambdas-libs/jwt": "1.0.0"
+    "@chat-lambdas-libs/jwt": "1.0.0",
+    "@chat-lambdas-libs/response": "1.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.136"
   }
 }

@@ -3,8 +3,11 @@ import {
   PostToConnectionCommand,
 } from "@aws-sdk/client-apigatewaymanagementapi";
 import { queryProcedure } from "@chat-lambdas-libs/database";
+import { Procedure, ProcedureOutput } from "@chat-lambdas-libs/database/types";
+import { createResponse } from "@chat-lambdas-libs/response";
+import { APIGatewayProxyEvent, Handler } from "aws-lambda";
 
-const createAPIGatewayClient = (event) => {
+const createAPIGatewayClient = (event: APIGatewayProxyEvent) => {
   return new ApiGatewayManagementApiClient({
     endpoint:
       "https://" +
@@ -14,39 +17,42 @@ const createAPIGatewayClient = (event) => {
   });
 };
 
-const getMessages = async (oldestMessageId) => {
+const getMessages = async (oldestMessageId?: string) => {
   const response = await queryProcedure({
-    name: "GetMessages",
-    params: oldestMessageId ? [oldestMessageId] : [null],
+    type: Procedure.GetMessages,
+    payload: { messageId: oldestMessageId ?? null },
   });
 
   console.log("response", JSON.stringify(response));
+  if (ProcedureOutput.Other == response.result.type) {
+    const [output = []] = response.result.payload ?? [];
 
-  const [output = []] = response?.results ?? [];
-
-  return output.map(({ message }) => message).reverse();
+    return output.map(({ message }: any) => message).reverse();
+  }
 };
 
-export const handler = async (event) => {
-  console.info("Received event", event);
+export const handler: Handler<APIGatewayProxyEvent> = async (event) => {
+  try {
+    console.info("Received event", event);
+    if (!event.body) return;
+    const { oldestMessageId } = JSON.parse(event.body).payload;
+    const apiGatewayClient = createAPIGatewayClient(event);
+    const messages = await getMessages(oldestMessageId);
 
-  const { oldestMessageId } = JSON.parse(event.body).payload;
-  const apiGatewayClient = createAPIGatewayClient(event);
-  const messages = await getMessages(oldestMessageId);
+    console.log(messages);
 
-  console.log(messages);
+    const command = new PostToConnectionCommand({
+      ConnectionId: event.requestContext.connectionId,
+      Data: JSON.stringify({
+        action: "getMessages",
+        payload: { messages },
+      }),
+    });
 
-  const command = new PostToConnectionCommand({
-    ConnectionId: event.requestContext.connectionId,
-    Data: JSON.stringify({
-      action: "getMessages",
-      payload: { messages },
-    }),
-  });
+    await apiGatewayClient.send(command);
 
-  await apiGatewayClient.send(command);
-
-  return {
-    statusCode: 200,
-  };
+    return createResponse({ statusCode: 200 });
+  } catch (e) {
+    return createResponse({ statusCode: 500 });
+  }
 };

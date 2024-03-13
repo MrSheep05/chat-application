@@ -5,6 +5,13 @@ import {
   SignCommand,
 } from "@aws-sdk/client-kms";
 import { webcrypto } from "crypto";
+import type {
+  GetClientFn,
+  GetPublicKeyFn,
+  PubKeyCache,
+  SignFn,
+  VerifyFn,
+} from "./types";
 
 const { subtle } = webcrypto;
 
@@ -22,18 +29,18 @@ const SIGNING_ALGORITHM_DETAILS = {
 };
 const JWT_TOKEN_TYPE = "JWT";
 
-let client;
+let client: KMSClient | undefined;
 
-const pubKeyCache = {};
+const pubKeyCache: PubKeyCache = {};
 
-const getClient = () => {
+const getClient: GetClientFn = () => {
   if (!client) {
     client = new KMSClient({});
   }
   return client;
 };
 
-const getPublicKey = async (keyId) => {
+const getPublicKey: GetPublicKeyFn = async (keyId) => {
   if (pubKeyCache[keyId]) {
     return pubKeyCache[keyId];
   }
@@ -65,15 +72,7 @@ const getPublicKey = async (keyId) => {
   return key;
 };
 
-/**
- * Sign a payload using KMS keys and return a JWT
- * @param {Object} payload - The partial payload to be signed, exp and iat are added automatically
- * @param {string} keyId - The KMS key ID / ARN
- * @param {Object} [options={}] - Options object (optional)
- * @param {number} options.expiresIn - Seconds until token expiry
- * @param {Date} options.expiresAt - Expiry date of JWT
- */
-export const sign = async (payload, keyId, options) => {
+export const sign: SignFn = async (payload, keyId, options) => {
   try {
     const { expiresIn, expiresAt } = options || {};
     const now = Date.now() / 1000;
@@ -128,12 +127,7 @@ export const sign = async (payload, keyId, options) => {
   }
 };
 
-/**
- * Verify a JWT using KMS keys
- * @param {string} token - The JWT to be verified
- * @param {string} keyId - The KMS key ID / ARN
- */
-export const verify = async (token, keyId) => {
+export const verify: VerifyFn = async (token, keyId) => {
   const parts = token.split(".");
   const pubKeyPromise = getPublicKey(keyId);
 
