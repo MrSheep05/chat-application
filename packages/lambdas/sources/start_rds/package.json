@@ -5,5 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "@aws-sdk/client-rds": "3.484.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.136"
   }
 }

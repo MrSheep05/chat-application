@@ -1,6 +1,12 @@
 import { sign } from "@chat-lambdas-libs/kms";
+import { CreateJWTFn } from "./types";
 
-export const createJWT = async ({ userId, username, aliasName, expiresIn }) => {
+export const createJWT: CreateJWTFn = async ({
+  aliasName,
+  expiresIn,
+  userId,
+  username,
+}) => {
   const token = await sign(
     {
       sub: userId,

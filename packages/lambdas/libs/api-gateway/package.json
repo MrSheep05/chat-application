@@ -1,10 +1,10 @@
 {
-  "private": true,
-  "name": "@chat-lambdas/get_messages",
+  "name": "@chat-lambdas-libs/api-gateway",
   "version": "1.0.0",
   "license": "MIT",
+  "main": "index.js",
+  "private": true,
   "dependencies": {
-    "@chat-lambdas-libs/database": "1.0.0",
     "@aws-sdk/client-apigatewaymanagementapi": "3.484.0"
   },
   "devDependencies": {

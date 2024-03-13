@@ -1,43 +1,156 @@
 import { ProcedureCallPacket } from "mysql2";
 import { connect } from "./rds";
-import type { QueryProcedureFn } from "./types";
+import {
+  type QueryProcedureFn,
+  type PARAMETER_TYPES,
+  type ProcessQueryFn,
+  Procedure,
+  ProcedureOutput,
+  ProcedureResponse,
+} from "./types";
 
-const PARAMETER_TYPES = {
-  IN: "in",
-  OUT: "out",
+export const queryProcedure: QueryProcedureFn = async (procedure) => {
+  const { type } = procedure;
+  switch (type) {
+    case Procedure.AddConnection: {
+      const { connectionId, userId } = procedure.payload;
+      const result = await processQuery({
+        type,
+        inputs: [userId, connectionId],
+      });
+      return createOutput({ result });
+    }
+    case Procedure.GetMessages: {
+      const { messageId } = procedure.payload;
+      const result = await processQuery({
+        type,
+        inputs: [messageId],
+      });
+      return createOutput({ result });
+    }
+    case Procedure.GetUserData: {
+      const { username } = procedure.payload;
+      const { userData } = procedure.outputs;
+      const result = await processQuery({
+        type,
+        inputs: [username],
+        outputs: [userData],
+      });
+      return createOutput({
+        result,
+        type: ProcedureOutput.GetUserData,
+        outputKey: `@${userData}`,
+        isJSON: true,
+      });
+    }
+    case Procedure.RegisterUser: {
+      const { username, password } = procedure.payload;
+      const result = await processQuery({
+        type,
+        inputs: joinVariables([username, password]),
+      });
+      return createOutput({ result });
+    }
+    case Procedure.RemoveConnection: {
+      const { connectionId } = procedure.payload;
+      const result = await processQuery({
+        type,
+        inputs: joinVariables([connectionId]),
+      });
+      return createOutput({ result });
+    }
+    case Procedure.RemoveMessage: {
+      const { connectionId, messageId } = procedure.payload;
+      const { updateCount } = procedure.outputs;
+      const result = await processQuery({
+        type,
+        inputs: joinVariables([connectionId, messageId]),
+        outputs: [updateCount],
+      });
+      return createOutput({ result });
+    }
+    case Procedure.AddMessage: {
+      const { userId, content } = procedure.payload;
+      const { messageData } = procedure.outputs;
+      const result = await processQuery({
+        type,
+        inputs: joinVariables([userId, content]),
+        outputs: [messageData],
+      });
+      return createOutput({
+        result,
+        type: ProcedureOutput.AddMessage,
+        outputKey: `@${messageData}`,
+        isJSON: true,
+      });
+    }
+    default: {
+      const result = await processQuery({
+        type,
+      });
+      return createOutput({ result });
+    }
+  }
 };
 
-const parseParamsToSQL = (params: any[], type = PARAMETER_TYPES.IN) =>
-  params
-    .map((param) => (type === PARAMETER_TYPES.IN ? `'${param}'` : `@${param}`))
-    .join(", ");
-
-export const queryProcedure: QueryProcedureFn = async ({
-  name,
-  params = [],
+const createOutput = ({
+  result,
+  outputKey,
+  type,
+  isJSON = false,
+}: {
+  result: { results: any; fields: any };
+  type?: ProcedureOutput;
+  outputKey?: string;
+  isJSON?: boolean;
+}): ProcedureResponse => {
+  const { results, fields } = result;
+  if (outputKey && type) {
+    const output = getOutput<any>(results, outputKey);
+    const ret = {
+      result: { type, payload: isJSON ? JSON.parse(output) : output },
+      fields,
+    };
+    console.log("RETURN ", ret);
+    return ret;
+  } else {
+    const ret = {
+      result: { type: ProcedureOutput.Other, payload: results },
+      fields,
+    };
+    console.log("RETURN ", ret);
+    return ret;
+  }
+};
+const processQuery: ProcessQueryFn = async ({
+  type,
+  inputs = [],
   outputs = [],
 }) => {
   const connection = await connect();
-  const paramsSQL = parseParamsToSQL(params);
-  const outputsSQL = parseParamsToSQL(outputs, PARAMETER_TYPES.OUT);
-  console.log("paramsSQL", paramsSQL);
-  console.log("outputsSQL", outputsSQL);
-
+  const inputSQL = Array.from({ length: inputs.length }, () => "?").join(",");
+  const outputSQL = Array.from({ length: outputs.length }, () => "@?").join(
+    ","
+  );
   return new Promise((resolve, reject) => {
     connection.query(
       outputs.length === 0
-        ? `CALL ${name}(${paramsSQL});`
-        : `CALL ${name}(${paramsSQL}, ${outputsSQL}); SELECT ${outputsSQL};`,
-      true,
+        ? `CALL ${type}(${inputSQL});`
+        : `CALL ${type}(${outputSQL} , ${inputSQL}); SELECT ${inputSQL}`,
+      [...joinVariables(inputs), ...outputs, ...outputs],
       (error, results, fields) => {
         connection.end();
         if (error) {
-          return reject(error);
+          reject(error);
         }
         resolve({ results, fields });
       }
     );
   });
+};
+
+const joinVariables = (vars: any[]): string[] => {
+  return vars.map((v) => `'${v}'`);
 };
 
 export const getOutput = <R>(

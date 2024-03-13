@@ -1,80 +1,45 @@
-import { createHmac } from "crypto";
-import { createJWT } from "@chat-lambdas-libs/jwt";
-import { queryProcedure } from "@chat-lambdas-libs/database";
+import type { APIGatewayProxyEvent, Handler } from "aws-lambda";
+import type { HandlerResponse } from "./types";
 
-const ONE_WEEK = 7 * 24 * 60 * 60;
+import { createResponse } from "@chat-lambdas-libs/response";
+import { generateJWTPair } from "./jwt";
+import { hash } from "./password";
+import { getUserData } from "./database";
 
-const hash = (password) => {
-  const hasher = createHmac("sha256", process.env.salt as string);
+export const handler: Handler<APIGatewayProxyEvent> = async (
+  event
+): Promise<HandlerResponse> => {
+  console.log(event);
 
-  hasher.update(password);
-
-  return hasher.digest("base64");
-};
-
-export const handler = async (event, _context) => {
-  console.info(event);
+  if (typeof event?.body !== "string") {
+    return createResponse({ statusCode: 400 });
+  }
 
   const { username, password } = JSON.parse(event.body);
 
+  if (typeof username !== "string" || typeof password !== "string") {
+    return createResponse({ statusCode: 400 });
+  }
+
   try {
-    const { results } = await queryProcedure({
-      name: "GetUserData",
-      params: [username],
-      outputs: ["userData"],
-    });
+    const { password: passwordHash, id: userId } = await getUserData(username);
 
-    console.log(JSON.stringify(results));
-
-    const [[result]] = results.slice(-1);
-    console.log("last result", result);
-    const { id: userId, password: passwordHash } = JSON.parse(
-      result["@userData"]
-    );
-    console.log("passwordHash", passwordHash);
-    const { kmsJwtAliasName, kmsRefreshJwtAliasName } = process.env;
-    console.log(kmsJwtAliasName, kmsRefreshJwtAliasName);
-    if (hash(password) === passwordHash) {
-      console.log("Passwords Match");
-      const token = await createJWT({
-        userId,
-        username,
-        aliasName: kmsJwtAliasName,
-        expiresIn: 60,
+    if (hash(password) !== passwordHash) {
+      console.log("Invalid credentials. Returning 400 to the client.");
+      return createResponse({
+        statusCode: 400,
+        message: "Invalid Credentials",
       });
-      const refreshToken = await createJWT({
-        userId,
-        username,
-        aliasName: kmsRefreshJwtAliasName,
-        expiresIn: ONE_WEEK,
-      });
-
-      return {
-        statusCode: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({ token, refreshToken }),
-      };
     }
 
-    console.log("Passwords DO NOT Match");
+    const { token, refreshToken } = await generateJWTPair({
+      userId,
+      username,
+    });
 
-    return {
-      statusCode: 400,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({ message: "Username or Password are incorrect" }),
-    };
+    return createResponse({ message: { token, refreshToken } });
   } catch (error) {
-    console.error(error);
-    return {
-      statusCode: 500,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        body: "some error occured",
-      },
-    };
+    console.error("Encountered an error:", error);
+    return createResponse({ statusCode: 500 });
   }
 };

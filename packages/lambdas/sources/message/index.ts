@@ -1,54 +1,43 @@
 import { queryProcedure, getOutput } from "@chat-lambdas-libs/database";
-import { createAPIGatewayClient, postToConnection } from "./apiGateway";
+import { postToConnections } from "@chat-lambdas-libs/api-gateway";
+import { APIGatewayProxyEvent, Handler } from "aws-lambda";
+import { createResponse } from "@chat-lambdas-libs/response";
+import { Procedure } from "@chat-lambdas-libs/database/types";
+import { addMessage, getConnections } from "./database";
 
-const addMessage = async ({ userId, message }) => {
-  const response = await queryProcedure({
-    name: "AddMessage",
-    params: [userId, message],
-    outputs: ["message_data"],
-  });
+export const handler: Handler<APIGatewayProxyEvent> = async (event) => {
+  try {
+    console.log("Received event", event);
 
-  const output = getOutput(response, "@message_data");
+    if (!event.body) {
+      console.log("Body is in invalid format:", event.body);
+      throw new Error("Invalid body");
+    }
 
-  return JSON.parse(output);
-};
+    const { payload } = JSON.parse(event.body);
+    const { message: content } = payload;
 
-const getConnections = async () => {
-  const {
-    results: [connections],
-  } = await queryProcedure({ name: "GetConnections" });
+    const { connectionId } = event.requestContext;
+    const { connections, userId } = await getConnections(connectionId);
 
-  return connections;
-};
+    if (!userId) {
+      console.error("No user match connection", userId);
+      throw new Error("No user matches connection");
+    }
 
-export const handler = async (event) => {
-  const { connectionId } = event.requestContext;
-  console.log(`Received a message ${event.body} from ${connectionId}`);
+    const addedMessage = await addMessage({ content, userId });
+    await postToConnections({
+      connections: connections.map(({ id }) => id),
+      event,
+      message: {
+        action: "message",
+        payload: addedMessage,
+      },
+    });
 
-  const apiGatewayClient = createAPIGatewayClient(event);
-  const parsedMessage = JSON.parse(event.body);
-  const { message } = parsedMessage.payload;
-
-  const connections = await getConnections();
-  const { user_id: userId } = connections.find(({ id }) => id === connectionId);
-  const addedMessage = await addMessage({ message, userId });
-  console.log(addedMessage);
-
-  await Promise.all(
-    connections.map(async ({ id: connectionId }) => {
-      console.log("Sending message to connection ", connectionId);
-      await postToConnection({
-        apiGatewayClient,
-        connectionId,
-        message: JSON.stringify({
-          action: "message",
-          payload: addedMessage,
-        }),
-      });
-    })
-  );
-
-  return {
-    statusCode: 200,
-  };
+    return createResponse({ statusCode: 200 });
+  } catch (error) {
+    console.error("Encountered an error", error);
+    return createResponse({ statusCode: 500 });
+  }
 };

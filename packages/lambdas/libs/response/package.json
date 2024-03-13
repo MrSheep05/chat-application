@@ -1,13 +1,9 @@
 {
-  "name": "@chat-lambdas-libs/database",
+  "name": "@chat-lambdas-libs/response",
   "version": "1.0.0",
   "license": "MIT",
   "main": "index.js",
   "private": true,
-  "dependencies": {
-    "@aws-sdk/rds-signer": "3.484.0",
-    "mysql2": "^3.5.1"
-  },
   "devDependencies": {
     "@types/aws-lambda": "8.10.136"
   }

@@ -1,20 +1,27 @@
-export type QueryProcedureFn = ({
-  name,
-  params,
+export enum PARAMETER_TYPES {
+  IN = "in",
+  OUT = "out",
+}
+
+export type QueryProcedureFn = (
+  procedure: StoredProcedure
+) => Promise<ProcedureResponse>;
+
+export type ProcessQueryFn = ({
+  type,
+  inputs,
   outputs,
 }: {
-  name: string;
-  params?: any[];
-  outputs?: any[];
-}) => Promise<{
-  results: any;
-  fields: any;
-}>;
-
-interface ProcedureResponse {
-  results: {
-    [key: string]: any;
-  }[];
+  type: Procedure;
+  inputs?: any[];
+  outputs?: string[];
+}) => Promise<{ results: any; fields: any }>;
+export interface ProcedureResponse {
+  result:
+    | AddMessageResponse
+    | GetUserDataResponse
+    | RemoveMessageResponse
+    | { type: ProcedureOutput.Other; payload: any };
   fields: any[];
 }
 
@@ -29,6 +36,13 @@ export enum Procedure {
   RemoveMessage = "RemoveMessage",
 }
 
+export enum ProcedureOutput {
+  AddMessage,
+  GetUserData,
+  RemoveMessage,
+  Other,
+}
+
 export type StoredProcedure =
   | AddConnectionProcedure
   | AddMessageProcedure
@@ -39,6 +53,31 @@ export type StoredProcedure =
   | RemoveConnectionProcedure
   | RemoveMessageProcedure;
 
+type AddMessageResponse = {
+  type: ProcedureOutput.AddMessage;
+  payload: {
+    id: string;
+    user_id: string;
+    username: string;
+    message: string;
+    timestamp: number;
+    visible: boolean;
+  };
+};
+
+type GetUserDataResponse = {
+  type: ProcedureOutput.GetUserData;
+  payload: {
+    id: string;
+    password: string;
+    username: string;
+  };
+};
+
+type RemoveMessageResponse = {
+  type: ProcedureOutput.RemoveMessage;
+  payload: number;
+};
 type AddConnectionProcedure = {
   type: Procedure.AddConnection;
   payload: {
@@ -61,7 +100,7 @@ type GetConnectionsProcedure = {
 
 type GetMessagesProcedure = {
   type: Procedure.GetMessages;
-  payload: { messageId?: string };
+  payload: { messageId: string | null };
 };
 
 type GetUserDataProcedure = {

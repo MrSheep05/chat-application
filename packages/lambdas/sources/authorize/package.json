@@ -5,5 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "@chat-lambdas-libs/kms": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.136"
   }
 }

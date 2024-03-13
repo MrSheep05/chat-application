@@ -1,7 +1,7 @@
 import {
-  ApiGatewayManagementApiClient,
-  PostToConnectionCommand,
-} from "@aws-sdk/client-apigatewaymanagementapi";
+  createAPIGatewayClient,
+  postToConnection,
+} from "@chat-lambdas-libs/api-gateway";
 import { getOutput, queryProcedure } from "@chat-lambdas-libs/database";
 
 const removeMessage = async ({ connectionId, messageId }) => {
@@ -26,35 +26,12 @@ const getConnections = async () => {
   return connections;
 };
 
-const createAPIGatewayAPI = (event) => {
-  return new ApiGatewayManagementApiClient({
-    endpoint:
-      "https://" +
-      event.requestContext.domainName +
-      "/" +
-      event.requestContext.stage,
-  });
-};
-
-const sendMessage = async ({ connectionId, message, client }) => {
-  const command = new PostToConnectionCommand({
-    ConnectionId: connectionId,
-    Data: message,
-  });
-
-  await client.send(command);
-};
-
-const updateConnections = async ({ message, apiGatewayAPI }) => {
+const updateConnections = async ({ message, apiGatewayClient }) => {
   const connections = await getConnections();
   const promises = connections.map(({ id: connectionId }) => {
     console.log("Sending message to connection ", connectionId);
 
-    return sendMessage({
-      client: apiGatewayAPI,
-      connectionId,
-      message,
-    });
+    return postToConnection({ connectionId, apiGatewayClient, message });
   });
 
   await Promise.all(promises);
@@ -64,7 +41,7 @@ export const handler = async (event) => {
   console.info("Event:", event);
   const { connectionId } = event.requestContext;
   const { id } = JSON.parse(event.body).payload;
-  const apiGatewayAPI = createAPIGatewayAPI(event);
+  const apiGatewayClient = createAPIGatewayClient(event);
 
   try {
     await removeMessage({ connectionId, messageId: id });
@@ -76,7 +53,7 @@ export const handler = async (event) => {
   try {
     await updateConnections({
       message: event.body,
-      apiGatewayAPI,
+      apiGatewayClient,
     });
 
     return { statusCode: 200 };
