@@ -136,7 +136,8 @@ const processQuery: ProcessQueryFn = async ({
     connection.query(
       outputs.length === 0
         ? `CALL ${type}(${inputSQL});`
-        : `CALL ${type}(${outputSQL} , ${inputSQL}); SELECT ${inputSQL}`,
+        : `CALL ${type}(${inputSQL} , ${outputSQL}); SELECT ${outputSQL}`,
+
       [...joinVariables(inputs), ...outputs, ...outputs],
       (error, results, fields) => {
         connection.end();
@@ -164,6 +165,7 @@ export const getOutput = <R>(
 
 const findOutput = <R>(data: any, key: string): R | null => {
   if (key in data) {
+    console.log("Found data", data[key]);
     return data[key];
   }
 
