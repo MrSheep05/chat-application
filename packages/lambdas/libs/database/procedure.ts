@@ -138,7 +138,7 @@ const processQuery: ProcessQueryFn = async ({
         ? `CALL ${type}(${inputSQL});`
         : `CALL ${type}(${inputSQL} , ${outputSQL}); SELECT ${outputSQL}`,
 
-      [...joinVariables(inputs), ...outputs, ...outputs],
+      [...inputs, ...outputs, ...outputs],
       (error, results, fields) => {
         connection.end();
         if (error) {
