@@ -47,7 +47,7 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
       const { username, password } = procedure.payload;
       const result = await processQuery({
         type,
-        inputs: joinVariables([username, password]),
+        inputs: [username, password],
       });
       return createOutput({ result });
     }
@@ -55,7 +55,7 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
       const { connectionId } = procedure.payload;
       const result = await processQuery({
         type,
-        inputs: joinVariables([connectionId]),
+        inputs: [connectionId],
       });
       return createOutput({ result });
     }
@@ -64,7 +64,7 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
       const { updateCount } = procedure.outputs;
       const result = await processQuery({
         type,
-        inputs: joinVariables([connectionId, messageId]),
+        inputs: [connectionId, messageId],
         outputs: [updateCount],
       });
       return createOutput({ result });
@@ -74,7 +74,7 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
       const { messageData } = procedure.outputs;
       const result = await processQuery({
         type,
-        inputs: joinVariables([userId, content]),
+        inputs: [userId, content],
         outputs: [messageData],
       });
       return createOutput({
