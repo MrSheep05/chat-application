@@ -129,16 +129,14 @@ const processQuery: ProcessQueryFn = async ({
 }) => {
   const connection = await connect();
   const inputSQL = Array.from({ length: inputs.length }, () => "?").join(",");
-  const outputSQL = Array.from({ length: outputs.length }, () => "@?").join(
-    ","
-  );
+  const outputSQL = outputs.map((e) => `@${e}`).join(",");
   return new Promise((resolve, reject) => {
     connection.query(
       outputs.length === 0
         ? `CALL ${type}(${inputSQL});`
         : `CALL ${type}(${inputSQL} , ${outputSQL}); SELECT ${outputSQL}`,
 
-      [...inputs, ...outputs, ...outputs],
+      [...inputs],
       (error, results, fields) => {
         connection.end();
         if (error) {
