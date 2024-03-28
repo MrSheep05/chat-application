@@ -144,8 +144,9 @@ const processQuery: ProcessQueryFn = async ({
         if (error) {
           reject(error);
         }
-        console.log(`RESULT ${results}`);
-        console.log(`FIELDS ${fields}`);
+        console.log(`RESULT`, results);
+        console.log(results);
+        console.log(`FIELDS`, fields);
         resolve({ results, fields });
       }
     );
@@ -166,6 +167,7 @@ export const getOutput = <R>(
 };
 
 const findOutput = <R>(data: any, key: string): R | null => {
+  if (!data) return null;
   if (key in data) {
     console.log("Found data", data[key]);
     return data[key];
