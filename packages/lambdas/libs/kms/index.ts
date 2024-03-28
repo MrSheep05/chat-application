@@ -25,7 +25,7 @@ const IMPORT_ALGORITHM = {
 const SIGNING_ALGORITHM_NAME = "RSASSA_PSS_SHA_256";
 const SIGNING_ALGORITHM_DETAILS = {
   name: "RSA-PSS",
-  saltLength: 32,
+  saltLength: process.env.salt?.length ?? 32,
 };
 const JWT_TOKEN_TYPE = "JWT";
 
