@@ -144,6 +144,8 @@ const processQuery: ProcessQueryFn = async ({
         if (error) {
           reject(error);
         }
+        console.log(`RESULT ${results}`);
+        console.log(`FIELDS ${fields}`);
         resolve({ results, fields });
       }
     );
