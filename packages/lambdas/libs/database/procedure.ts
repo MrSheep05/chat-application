@@ -129,6 +129,7 @@ const processQuery: ProcessQueryFn = async ({
 }) => {
   const connection = await connect();
   const inputSQL = Array.from({ length: inputs.length }, () => "?").join(",");
+  console.log(outputs);
   const outputSQL = outputs.map((e) => `@${e}`).join(",");
   return new Promise((resolve, reject) => {
     connection.query(
@@ -157,6 +158,7 @@ const joinVariables = (vars: any[]): string[] => {
 
 const findOutput = <R>(data: any, key: string): R | null => {
   if (!data) return null;
+  console.log(data, key);
   if (key in data) {
     console.log("Found data", data[key]);
     return data[key];
