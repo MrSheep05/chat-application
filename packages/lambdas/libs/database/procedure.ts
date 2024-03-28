@@ -106,7 +106,7 @@ const createOutput = ({
 }): ProcedureResponse => {
   const { results, fields } = result;
   if (outputKey && type) {
-    const output = getOutput<any>(results, outputKey);
+    const output = findOutput<any>(results, outputKey);
     const ret = {
       result: { type, payload: isJSON ? JSON.parse(output) : output },
       fields,
@@ -155,15 +155,6 @@ const processQuery: ProcessQueryFn = async ({
 
 const joinVariables = (vars: any[]): string[] => {
   return vars.map((v) => `'${v}'`);
-};
-
-export const getOutput = <R>(
-  queryResult: { results: ProcedureCallPacket },
-  outputKey: string
-): R | null => {
-  const { results } = queryResult;
-
-  return findOutput(results, outputKey);
 };
 
 const findOutput = <R>(data: any, key: string): R | null => {
