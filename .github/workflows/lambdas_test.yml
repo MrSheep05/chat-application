@@ -1,0 +1,22 @@
+name: Lambdas - Unit Test
+on:
+  push:
+    paths:
+      - "packages/lambdas/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/lambdas
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Node.js and Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Modules
+        run: yarn
+      - name: Test
+        run: yarn test
