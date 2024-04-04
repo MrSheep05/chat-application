@@ -16,23 +16,23 @@ export type ProcessQueryFn = ({
 }) => Promise<{ results: any; fields: any }>;
 export interface ProcedureResponse {
   result:
-    | AddMessageResponse
     | GetUserDataResponse
     | RemoveMessageResponse
     | GetConnectionsResponse
+    | MessagesResponse
     | { type: ProcedureOutput.Other; payload: any };
   fields: any[];
 }
 
 export enum Procedure {
   AddConnection = "AddConnection",
-  AddMessage = "AddMessage2",
+  AddMessage = "AddMessage",
   GetConnections = "GetConnections",
-  GetMessages = "GetMessages2",
-  GetUserData = "GetUserData2",
+  GetMessages = "GetMessages",
+  GetUserData = "GetUserData",
   RegisterUser = "RegisterUser",
   RemoveConnection = "RemoveConnection",
-  RemoveMessage = "RemoveMessage2",
+  RemoveMessage = "RemoveMessage",
 }
 
 export enum ProcedureOutput {
@@ -40,6 +40,7 @@ export enum ProcedureOutput {
   GetUserData,
   RemoveMessage,
   GetConnections,
+  GetMessages,
   Other,
 }
 
@@ -53,16 +54,18 @@ export type StoredProcedure =
   | RemoveConnectionProcedure
   | RemoveMessageProcedure;
 
-type AddMessageResponse = {
-  type: ProcedureOutput.AddMessage;
-  payload: {
-    id: string;
-    user_id: string;
-    username: string;
-    message: string;
-    timestamp: number;
-    visible: boolean;
-  }[];
+export type MessageBody = {
+  id: string;
+  userId: string;
+  username: string;
+  message: string;
+  timestamp: number;
+  visible: boolean;
+};
+
+type MessagesResponse = {
+  type: ProcedureOutput.GetMessages | ProcedureOutput.AddMessage;
+  payload: MessageBody[];
 };
 
 type GetUserDataResponse = {
@@ -83,8 +86,8 @@ type GetConnectionsResponse = {
   type: ProcedureOutput.GetConnections;
   payload: {
     id: string;
-    user_id: string;
-  };
+    userId: string;
+  }[];
 };
 type AddConnectionProcedure = {
   type: Procedure.AddConnection;
