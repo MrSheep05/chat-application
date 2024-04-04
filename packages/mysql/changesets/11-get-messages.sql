@@ -20,21 +20,17 @@ BEGIN
         FROM selected_message_row;
     END IF;
 	
-    SELECT 
-        BIN_TO_UUID(m.id) id,
-        JSON_OBJECT(
-            'id', BIN_TO_UUID(m.id),
-            'user_id', BIN_TO_UUID(m.user_id),
-            'username', u.username,
-            'timestamp', m.timestamp,
-            'message', m.content, 
-            'visible', m.visible
-        ) message
+    SELECT  
+        BIN_TO_UUID(m.id) 'id',
+        BIN_TO_UUID(m.user_id) 'user_id',
+        u.username 'username',
+        m.timestamp 'timestamp',
+        m.content 'message',
+        m.visible 'visible'
     FROM chat.message m
     JOIN chat.user u ON u.id = m.user_id
     WHERE m.visible = true
     ORDER BY m.timestamp DESC
     LIMIT offset, 20;
-    
 END//
 -- rollback DROP PROCEDURE GetMessages

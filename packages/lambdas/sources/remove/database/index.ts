@@ -15,7 +15,7 @@ export const removeMessage: RemoveMessageFn = async ({
     result.type === ProcedureOutput.RemoveMessage &&
     result.payload.length > 0
   ) {
-    return result.payload[0];
+    return result.payload[0].updateCount;
   }
   throw Error("Unexpected output type from procedure!");
 };

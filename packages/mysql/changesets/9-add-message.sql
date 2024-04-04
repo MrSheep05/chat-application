@@ -5,7 +5,7 @@ ALTER TABLE chat.message CHANGE `timestamp` `timestamp` TIMESTAMP NOT NULL DEFAU
 -- rollback ALTER TABLE chat.message ALTER timestamp DROP DEFAULT
 
 -- changeset liquibase:add_message endDelimiter://
-CREATE PROCEDURE AddMessage(IN input_user_id VARCHAR(36), IN input_content TEXT, OUT message_data JSON)
+CREATE PROCEDURE AddMessage(IN input_user_id VARCHAR(36), IN input_content TEXT)
 BEGIN
     IF input_user_id IS NULL
     THEN
@@ -21,17 +21,14 @@ BEGIN
 
     INSERT INTO chat.message (id, user_id, content) VALUES (@id, UUID_TO_BIN(input_user_id), input_content);
     
-    SELECT JSON_OBJECT(
-        'id', BIN_TO_UUID(m.id),
-        'user_id', BIN_TO_UUID(m.user_id),
-        'username', u.username,
-        'timestamp', m.timestamp,
-        'message', m.content, 
-        'visible', m.visible
-    )
+    SELECT  BIN_TO_UUID(m.id) 'id',
+            BIN_TO_UUID(m.user_id) 'userId',
+            u.username 'username',
+            m.timestamp 'timestamp',
+            m.content 'content', 
+            m.visible 'visible'
     FROM chat.message m
     JOIN chat.user u ON u.id = m.user_id
-    WHERE m.id = @id 
-    INTO message_data;
+    WHERE m.id = @id;
 END//
 -- rollback DROP PROCEDURE AddMessage

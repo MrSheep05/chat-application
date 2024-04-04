@@ -79,7 +79,7 @@ type GetUserDataResponse = {
 
 type RemoveMessageResponse = {
   type: ProcedureOutput.RemoveMessage;
-  payload: number[];
+  payload: { updateCount: number }[];
 };
 
 type GetConnectionsResponse = {

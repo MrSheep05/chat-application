@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
 -- changeset liquibase:remove_message endDelimiter://
-CREATE PROCEDURE RemoveMessage(IN input_connection_id VARCHAR(255), IN input_message_id VARCHAR(36), OUT update_count TINYINT)
+CREATE PROCEDURE RemoveMessage(IN input_connection_id VARCHAR(255), IN input_message_id VARCHAR(36))
 BEGIN
     IF input_connection_id IS NULL
     THEN
@@ -22,6 +22,6 @@ BEGIN
     )
     AND id = UUID_TO_BIN(input_message_id);
 
-    SELECT ROW_COUNT() INTO update_count;
+    SELECT ROW_COUNT() 'updateCount'
 END//
 -- rollback DROP PROCEDURE RemoveMessage
