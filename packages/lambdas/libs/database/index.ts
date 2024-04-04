@@ -1,1 +1,2 @@
-export { queryProcedure, getOutput } from "./procedure";
+import { queryProcedure } from "./procedure";
+export { queryProcedure } from "./procedure";
