@@ -7,7 +7,7 @@ export const addMessage: AddMessageFn = async ({ userId, content }) => {
     type: Procedure.AddMessage,
     payload: { userId, content },
   });
-
+  console.log("AddMESSAGE RESULT", result);
   if (result.type === ProcedureOutput.AddMessage && result.payload.length > 0) {
     return result.payload[0];
   }

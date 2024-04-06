@@ -36,12 +36,12 @@ export enum Procedure {
 }
 
 export enum ProcedureOutput {
-  AddMessage,
-  GetUserData,
-  RemoveMessage,
-  GetConnections,
-  GetMessages,
-  Other,
+  AddMessage = 1,
+  GetUserData = 2,
+  RemoveMessage = 3,
+  GetConnections = 4,
+  GetMessages = 5,
+  Other = 0, //FALSE
 }
 
 export type StoredProcedure =

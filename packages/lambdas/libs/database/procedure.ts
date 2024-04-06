@@ -84,7 +84,7 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
       const result = await processQuery({
         type,
       });
-      return createOutput({ result, type: ProcedureOutput.GetConnections });
+      return createOutput({ result });
     }
   }
 };
