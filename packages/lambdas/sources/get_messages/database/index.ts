@@ -8,7 +8,7 @@ export const getMessages: GetMessagesFn = async (oldestMessageId) => {
     payload: { messageId: oldestMessageId ?? null },
   });
 
-  if (ProcedureOutput.GetMessages == result.type) {
+  if (ProcedureOutput.GetMessages === result.type) {
     const { payload } = result;
     return payload.reverse();
   }

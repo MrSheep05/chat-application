@@ -26,7 +26,7 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
         type,
         inputs: [messageId],
       });
-      return createOutput({ result });
+      return createOutput({ result, type: ProcedureOutput.GetMessages });
     }
     case Procedure.GetUserData: {
       const { username } = procedure.payload;
@@ -61,7 +61,7 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
         type,
         inputs: [connectionId, messageId],
       });
-      return createOutput({ result });
+      return createOutput({ result, type: ProcedureOutput.RemoveMessage });
     }
     case Procedure.AddMessage: {
       const { userId, content } = procedure.payload;
@@ -84,7 +84,7 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
       const result = await processQuery({
         type,
       });
-      return createOutput({ result });
+      return createOutput({ result, type: ProcedureOutput.GetConnections });
     }
   }
 };
