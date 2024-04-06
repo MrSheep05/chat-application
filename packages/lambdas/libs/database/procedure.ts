@@ -30,17 +30,13 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
     }
     case Procedure.GetUserData: {
       const { username } = procedure.payload;
-      const { userData } = procedure.outputs;
       const result = await processQuery({
         type,
         inputs: [username],
-        outputs: [userData],
       });
       return createOutput({
         result,
         type: ProcedureOutput.GetUserData,
-        outputKey: `@${userData}`,
-        isJSON: true,
       });
     }
     case Procedure.RegisterUser: {
@@ -61,28 +57,28 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
     }
     case Procedure.RemoveMessage: {
       const { connectionId, messageId } = procedure.payload;
-      const { updateCount } = procedure.outputs;
       const result = await processQuery({
         type,
         inputs: [connectionId, messageId],
-        outputs: [updateCount],
       });
       return createOutput({ result });
     }
     case Procedure.AddMessage: {
       const { userId, content } = procedure.payload;
-      const { messageData } = procedure.outputs;
       const result = await processQuery({
         type,
         inputs: [userId, content],
-        outputs: [messageData],
       });
       return createOutput({
         result,
         type: ProcedureOutput.AddMessage,
-        outputKey: `@${messageData}`,
-        isJSON: true,
       });
+    }
+    case Procedure.GetConnections: {
+      const result = await processQuery({
+        type,
+      });
+      return createOutput({ result, type: ProcedureOutput.GetConnections });
     }
     default: {
       const result = await processQuery({
@@ -95,48 +91,33 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
 
 const createOutput = ({
   result,
-  outputKey,
   type,
-  isJSON = false,
 }: {
   result: { results: any; fields: any };
   type?: ProcedureOutput;
-  outputKey?: string;
-  isJSON?: boolean;
 }): ProcedureResponse => {
-  const { results, fields } = result;
-  if (outputKey && type) {
-    const output = findOutput<any>(results, outputKey);
-    const ret = {
-      result: { type, payload: isJSON ? JSON.parse(output) : output },
-      fields,
-    };
-    console.log("RETURN ", ret);
-    return ret;
-  } else {
-    const ret = {
-      result: { type: ProcedureOutput.Other, payload: results },
-      fields,
-    };
-    console.log("RETURN ", ret);
-    return ret;
-  }
+  const {
+    results: [results],
+    fields,
+  } = result;
+  return type
+    ? {
+        result: { type, payload: results },
+        fields,
+      }
+    : {
+        result: { type: ProcedureOutput.Other, payload: results },
+        fields,
+      };
 };
-const processQuery: ProcessQueryFn = async ({
-  type,
-  inputs = [],
-  outputs = [],
-}) => {
+
+const processQuery: ProcessQueryFn = async ({ type, inputs = [] }) => {
   const connection = await connect();
   const inputSQL = Array.from({ length: inputs.length }, () => "?").join(",");
-  console.log(outputs);
-  const outputSQL = outputs.map((e) => `@${e}`).join(",");
+
   return new Promise((resolve, reject) => {
     connection.query(
-      outputs.length === 0
-        ? `CALL ${type}(${inputSQL});`
-        : `CALL ${type}(${inputSQL} , ${outputSQL}); SELECT ${outputSQL}`,
-
+      `CALL ${type}(${inputSQL});`,
       [...inputs],
       (error, results, fields) => {
         connection.end();
@@ -152,25 +133,21 @@ const processQuery: ProcessQueryFn = async ({
   });
 };
 
-const joinVariables = (vars: any[]): string[] => {
-  return vars.map((v) => `'${v}'`);
-};
+// const findOutput = <R>(data: any, key: string): R | null => {
+//   if (!data) return null;
+//   console.log(data, key);
+//   if (key in data) {
+//     console.log("Found data", data[key]);
+//     return data[key];
+//   }
 
-const findOutput = <R>(data: any, key: string): R | null => {
-  if (!data) return null;
-  console.log(data, key);
-  if (key in data) {
-    console.log("Found data", data[key]);
-    return data[key];
-  }
+//   if (Array.isArray(data)) {
+//     return data.reduce((output, item) => {
+//       if (output) return output;
 
-  if (Array.isArray(data)) {
-    return data.reduce((output, item) => {
-      if (output) return output;
+//       return findOutput(item, key);
+//     }, null);
+//   }
 
-      return findOutput(item, key);
-    }, null);
-  }
-
-  return null;
-};
+//   return null;
+// };

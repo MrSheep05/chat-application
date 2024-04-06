@@ -1,9 +1,3 @@
-import { verify } from "@chat-lambdas-libs/kms";
-import {
-  APIGatewayRequestAuthorizerEvent,
-  Callback,
-  Handler,
-} from "aws-lambda";
 import { generateAllow, generateDeny } from "../policy";
 import { GetMethodArnFn, RequestHandlerFn } from "./types";
 

@@ -1,30 +1,22 @@
-import { createHmac } from "crypto";
-import { queryProcedure } from "@chat-lambdas-libs/database";
+import { createResponse } from "@chat-lambdas-libs/response";
+import { APIGatewayProxyEvent, Handler } from "aws-lambda";
+import { registerUser } from "./database";
+import { hashPassword } from "./password";
 
-const hash = (password) => {
-  const hasher = createHmac("sha256", process.env.salt as string);
-  hasher.update(password);
-  return hasher.digest("base64");
-};
+export const handler: Handler<APIGatewayProxyEvent> = async (event) => {
+  const { username, password } = JSON.parse(event.body ?? "{}");
+  if (!username || !password) return createResponse({ statusCode: 400 });
 
-export const handler = async (event, _context) => {
-  console.log(event);
-  const { username, password } = JSON.parse(event.body);
+  const hashedPassword = hashPassword(password);
+  if (!hashedPassword) return createResponse({ statusCode: 400 });
 
   try {
-    const { results, fields } = await queryProcedure({
-      name: "RegisterUser",
-      params: [username, hash(password)],
-    });
-    console.log("Results", results);
-    console.log("Fields", fields);
+    await registerUser({ username, password });
   } catch (error) {
     console.error("Failed to execute the procedure", error);
-    return { statusCode: 400, body: "User already exist!" };
+    return createResponse({ statusCode: 400, message: "User already exist!" });
   }
-
-  return {
+  return createResponse({
     statusCode: 200,
-    body: "Working",
-  };
+  });
 };

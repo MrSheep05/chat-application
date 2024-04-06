@@ -10,17 +10,16 @@ export type QueryProcedureFn = (
 export type ProcessQueryFn = ({
   type,
   inputs,
-  outputs,
 }: {
   type: Procedure;
   inputs?: any[];
-  outputs?: string[];
 }) => Promise<{ results: any; fields: any }>;
 export interface ProcedureResponse {
   result:
-    | AddMessageResponse
     | GetUserDataResponse
     | RemoveMessageResponse
+    | GetConnectionsResponse
+    | MessagesResponse
     | { type: ProcedureOutput.Other; payload: any };
   fields: any[];
 }
@@ -40,6 +39,8 @@ export enum ProcedureOutput {
   AddMessage,
   GetUserData,
   RemoveMessage,
+  GetConnections,
+  GetMessages,
   Other,
 }
 
@@ -53,16 +54,18 @@ export type StoredProcedure =
   | RemoveConnectionProcedure
   | RemoveMessageProcedure;
 
-type AddMessageResponse = {
-  type: ProcedureOutput.AddMessage;
-  payload: {
-    id: string;
-    user_id: string;
-    username: string;
-    message: string;
-    timestamp: number;
-    visible: boolean;
-  };
+export type MessageBody = {
+  id: string;
+  userId: string;
+  username: string;
+  message: string;
+  timestamp: number;
+  visible: boolean;
+};
+
+type MessagesResponse = {
+  type: ProcedureOutput.GetMessages | ProcedureOutput.AddMessage;
+  payload: MessageBody[];
 };
 
 type GetUserDataResponse = {
@@ -71,12 +74,20 @@ type GetUserDataResponse = {
     id: string;
     password: string;
     username: string;
-  };
+  }[];
 };
 
 type RemoveMessageResponse = {
   type: ProcedureOutput.RemoveMessage;
-  payload: number;
+  payload: { updateCount: number }[];
+};
+
+type GetConnectionsResponse = {
+  type: ProcedureOutput.GetConnections;
+  payload: {
+    id: string;
+    userId: string;
+  }[];
 };
 type AddConnectionProcedure = {
   type: Procedure.AddConnection;
@@ -89,9 +100,6 @@ type AddConnectionProcedure = {
 type AddMessageProcedure = {
   type: Procedure.AddMessage;
   payload: { userId: string; content: string };
-  outputs: {
-    messageData: string;
-  };
 };
 
 type GetConnectionsProcedure = {
@@ -107,9 +115,6 @@ type GetUserDataProcedure = {
   type: Procedure.GetUserData;
   payload: {
     username: string;
-  };
-  outputs: {
-    userData: string;
   };
 };
 
@@ -133,8 +138,5 @@ type RemoveMessageProcedure = {
   payload: {
     connectionId: string;
     messageId: string;
-  };
-  outputs: {
-    updateCount: string;
   };
 };
