@@ -96,17 +96,16 @@ const createOutput = ({
   result: { results: any; fields: any };
   type?: ProcedureOutput;
 }): ProcedureResponse => {
-  const {
-    results: [results],
-    fields,
-  } = result;
+  const { results, fields } = result;
+  const payload =
+    typeof results[Symbol.iterator] === "function" ? results[0] : results;
   return type
     ? {
-        result: { type, payload: results },
+        result: { type, payload },
         fields,
       }
     : {
-        result: { type: ProcedureOutput.Other, payload: results },
+        result: { type: ProcedureOutput.Other, payload },
         fields,
       };
 };
