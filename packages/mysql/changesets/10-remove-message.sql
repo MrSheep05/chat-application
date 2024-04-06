@@ -22,6 +22,6 @@ BEGIN
     )
     AND id = UUID_TO_BIN(input_message_id);
 
-    SELECT ROW_COUNT() 'updateCount'
+    SELECT ROW_COUNT() 'updateCount';
 END//
 -- rollback DROP PROCEDURE RemoveMessage
