@@ -1,6 +1,6 @@
 resource "aws_iam_role" "web_identity_github_role" {
   name               = format("web_identity_github_role_%s", var.random_name)
-  assume_role_policy = data.web_identity_github_policy_document.json
+  assume_role_policy = data.aws_iam_policy_document.web_identity_github_policy_document.json
 }
 
 resource "aws_iam_policy" "s3_chat_lambdas_put_acl_policy" {
