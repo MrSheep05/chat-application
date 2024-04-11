@@ -4,7 +4,9 @@ data "aws_iam_policy_document" "web_identity_github_policy_document" {
     effect = "Allow"
     principals {
       type        = "Federated"
-      identifiers = ["arn:aws:iam::your-account-number:oidc-provider/token.actions.githubusercontent.com"]
+      identifiers = [
+        format("arn:aws:iam::%s:oidc-provider/token.actions.githubusercontent.com", data.aws_caller_identity.current.account_id)
+      ]
     }
     actions = ["sts:AssumeRoleWithWebIdentity"]
 
