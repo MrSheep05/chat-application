@@ -1,14 +1,10 @@
-import { createJWT, getTokenPayload } from "@chat-lambdas-libs/jwt";
-
 import type { APIGatewayProxyEvent, Handler } from "aws-lambda";
 import { createResponse } from "@chat-lambdas-libs/response";
+
 import { GetDataFromEventFn } from "./types";
 import { createKeyPair, verifyTokens } from "./jwt";
 
-const INVAILD_CASES = ["Invalid token", "Invalid signature"];
-
 const UNAUTHORISED_RESPONSE = createResponse({ statusCode: 401 });
-
 const { kmsJwtAliasName, kmsRefreshJwtAliasName } = process.env;
 
 const getDataFromEvent: GetDataFromEventFn = (event) => {
