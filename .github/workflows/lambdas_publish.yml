@@ -31,3 +31,5 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: eu-west-2
+      - name: Copy files to the production bucket with the AWS CLI
+        run: aws s3 sync dist s3://${{ secrets.AWS_S3_LAMBDAS_BUCKET }} --delete --acl public-read
