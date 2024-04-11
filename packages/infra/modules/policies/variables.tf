@@ -25,3 +25,7 @@ variable "kms_jwt_arn" {
 variable "kms_refresh_jwt_arn" {
   type = string
 }
+
+variable "s3_chat_lambdas_arn" {
+  type = string
+}

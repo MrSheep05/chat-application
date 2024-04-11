@@ -11,6 +11,7 @@ module "s3" {
 
   random_name = module.random.random_name
 }
+
 module "lambda" {
   source = "./modules/lambda"
 
@@ -50,4 +51,5 @@ module "policies" {
   api_gateway_role_name = module.api_gateway_v2.api_gateway_role_name
   kms_jwt_arn           = module.kms.kms_jwt_arn
   kms_refresh_jwt_arn   = module.kms.kms_refresh_jwt_arn
+  s3_chat_lambdas_arn   = module.s3.arn
 }
