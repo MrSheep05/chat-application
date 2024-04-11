@@ -23,8 +23,15 @@ export type VerifyFn = (
   keyId: string
 ) => Promise<{
   isValid: boolean;
-  error?: string;
+  error?: TokenError;
   payload?: {
     [key: string]: any;
   };
 }>;
+
+export enum TokenError {
+  InvalidPayload = "Invalid payload",
+  InvalidSignature = "Invalid signature",
+  TokenExpired = "Token expired",
+  InvalidToken = "Invalid token",
+}

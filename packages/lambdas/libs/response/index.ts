@@ -2,7 +2,7 @@ import { CreateBodyFn, CreateResponseFn, ITemplates } from "./types";
 
 const TEMPLATES: ITemplates = {
   200: "OK",
-  400: "Not Found",
+  400: "Bad Request",
   500: "Internal Server Error",
 };
 
