@@ -6,6 +6,11 @@ module "kms" {
   source = "./modules/kms"
 }
 
+module "s3" {
+  source = "./modules/s3"
+
+  random_name = module.random.random_name
+}
 module "lambda" {
   source = "./modules/lambda"
 
