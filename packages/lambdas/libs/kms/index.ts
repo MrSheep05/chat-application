@@ -5,13 +5,16 @@ import {
   SignCommand,
 } from "@aws-sdk/client-kms";
 import { webcrypto } from "crypto";
-import type {
-  GetClientFn,
-  GetPublicKeyFn,
-  PubKeyCache,
-  SignFn,
-  VerifyFn,
+import {
+  TokenError,
+  type GetClientFn,
+  type GetPublicKeyFn,
+  type PubKeyCache,
+  type SignFn,
+  type VerifyFn,
 } from "./types";
+
+export { TokenError } from "./types";
 
 const { subtle } = webcrypto;
 
@@ -134,7 +137,7 @@ export const verify: VerifyFn = async (token, keyId) => {
   if (parts.length !== 3) {
     return {
       isValid: false,
-      error: "Invalid token",
+      error: TokenError.InvalidToken,
     };
   }
 
@@ -152,7 +155,7 @@ export const verify: VerifyFn = async (token, keyId) => {
   if (!result) {
     return {
       isValid: false,
-      error: "Invalid signature",
+      error: TokenError.InvalidSignature,
     };
   }
 
@@ -167,7 +170,7 @@ export const verify: VerifyFn = async (token, keyId) => {
       if (payload.exp < now) {
         return {
           isValid: false,
-          error: "Token expired",
+          error: TokenError.TokenExpired,
           payload,
         };
       }
@@ -182,7 +185,7 @@ export const verify: VerifyFn = async (token, keyId) => {
 
     return {
       isValid: false,
-      error: "Invalid payload",
+      error: TokenError.InvalidPayload,
     };
   }
 };

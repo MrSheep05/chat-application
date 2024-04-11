@@ -1,69 +1,59 @@
-import { verify } from "@chat-lambdas-libs/kms";
-import { createJWT } from "@chat-lambdas-libs/jwt";
+import { createJWT, getTokenPayload } from "@chat-lambdas-libs/jwt";
+
+import type { APIGatewayProxyEvent, Handler } from "aws-lambda";
+import { createResponse } from "@chat-lambdas-libs/response";
+import { GetDataFromEventFn } from "./types";
+import { createKeyPair, verifyTokens } from "./jwt";
 
 const INVAILD_CASES = ["Invalid token", "Invalid signature"];
 
-const getTokenPayload = (token) => {
-  const [, payload] = token.split(".");
-
-  return JSON.parse(Buffer.from(payload, "base64url").toString());
-};
-
-const UNAUTHORISED_RESPONSE = { statusCode: 401 };
-const ONE_WEEK = 7 * 24 * 60 * 60;
+const UNAUTHORISED_RESPONSE = createResponse({ statusCode: 401 });
 
 const { kmsJwtAliasName, kmsRefreshJwtAliasName } = process.env;
 
-export const handler = async (event) => {
+const getDataFromEvent: GetDataFromEventFn = (event) => {
+  try {
+    if (event.body) {
+      return JSON.parse(event.body);
+    }
+  } catch (error) {
+    console.error("Failed to parse the tokens:", error);
+  }
+
+  return {};
+};
+
+export const handler: Handler<APIGatewayProxyEvent> = async (event) => {
   console.log("Received request:", event);
+  if (!kmsJwtAliasName || !kmsRefreshJwtAliasName) {
+    return createResponse({ statusCode: 500 });
+  }
 
-  const { token, refreshToken } = JSON.parse(event.body);
-  const { isValid, error } = await verify(token, kmsJwtAliasName);
+  const { token, refreshToken } = getDataFromEvent(event);
 
-  if (!isValid && error !== "Token expired") {
-    console.log("Token invalid", error);
+  if (!token || !refreshToken) {
+    return createResponse({ statusCode: 400 });
+  }
+
+  try {
+    await verifyTokens(token, refreshToken);
+  } catch (error) {
+    console.error("Verify Tokens Error:", error);
     return UNAUTHORISED_RESPONSE;
   }
 
-  const { isValid: isValidRefresh } = await verify(
-    refreshToken,
-    kmsRefreshJwtAliasName
-  );
+  try {
+    const { token: newToken, refreshToken: newRefreshToken } =
+      await createKeyPair(token);
 
-  if (!isValidRefresh) {
-    console.log("Refresh token invalid");
-    return UNAUTHORISED_RESPONSE;
+    return createResponse({
+      message: JSON.stringify({
+        token: newToken,
+        refreshToken: newRefreshToken,
+      }),
+      statusCode: 200,
+    });
+  } catch (error) {
+    return createResponse({ statusCode: 500 });
   }
-
-  const payloads = [refreshToken, token].map(getTokenPayload);
-  const [firstPayload] = payloads;
-
-  if (!payloads.every(({ sub }) => Boolean(sub) && sub === firstPayload.sub)) {
-    console.log("Subjects do not match");
-    return UNAUTHORISED_RESPONSE;
-  }
-
-  const { sub: userId, username } = firstPayload;
-
-  const newToken = await createJWT({
-    userId,
-    username,
-    expiresIn: 60,
-    aliasName: kmsJwtAliasName,
-  });
-
-  const newRefreshToken = await createJWT({
-    userId,
-    username,
-    expiresIn: ONE_WEEK,
-    aliasName: kmsRefreshJwtAliasName,
-  });
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ token: newToken, refreshToken: newRefreshToken }),
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-    },
-  };
 };

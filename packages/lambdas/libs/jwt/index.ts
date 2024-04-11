@@ -21,3 +21,16 @@ export const createJWT: CreateJWTFn = async ({
 
   return token;
 };
+
+export const getTokenPayload = (token: string) => {
+  const [, payload] = token.split(".");
+
+  return JSON.parse(Buffer.from(payload, "base64url").toString());
+};
+
+export const doSubjectsMatch = (...tokens: string[]) => {
+  const payloads = tokens.map(getTokenPayload);
+  const [firstPayload] = payloads;
+
+  return payloads.every(({ sub }) => Boolean(sub) && sub === firstPayload.sub);
+};
