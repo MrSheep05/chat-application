@@ -1,8 +1,4 @@
-import {
-  createAPIGatewayClient,
-  postToConnection,
-  postToConnections,
-} from "@chat-lambdas-libs/api-gateway";
+import { postToConnections } from "@chat-lambdas-libs/api-gateway";
 import { APIGatewayProxyEvent, Handler } from "aws-lambda";
 import { getDataFromEvent } from "./event";
 import { createResponse } from "@chat-lambdas-libs/response";
