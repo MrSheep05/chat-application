@@ -12,3 +12,13 @@ resource "aws_iam_role_policy_attachment" "s3_chat_lambdas_put_acl_policy_attach
   role       = aws_iam_role.web_identity_github_role.name
   policy_arn = aws_iam_policy.s3_chat_lambdas_put_acl_policy.arn
 }
+
+resource "aws_iam_policy" "web_identity_github_policy" {
+  name   = format("chat_lambdas_put_acl_policy_%s", var.random_name)
+  policy = data.aws_iam_policy_document.web_identity_github_policy_document.json
+}
+
+resource "aws_iam_role_policy_attachment" "web_identity_github_policy_attachment" {
+  role       = aws_iam_role.web_identity_github_role.name
+  policy_arn = aws_iam_policy.web_identity_github_policy.arn
+}
