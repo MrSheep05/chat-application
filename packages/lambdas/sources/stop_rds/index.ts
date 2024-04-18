@@ -1,8 +1,9 @@
 import { StopDBInstanceCommand, RDSClient } from "@aws-sdk/client-rds";
+import { APIGatewayProxyEvent, Handler } from "aws-lambda";
 
 const { databaseInstanceIdentifier } = process.env;
 
-export const handler = async (event) => {
+export const handler: Handler<APIGatewayProxyEvent> = async (event) => {
   console.info("Event:", event);
 
   try {
