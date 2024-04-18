@@ -6,7 +6,7 @@ import { createResponse } from "@chat-lambdas-libs/response";
 export const handler: Handler<APIGatewayProxyEvent> = async (
   event,
   _context,
-  callback
+  _callback
 ) => {
   console.info("event:", event);
 
