@@ -14,3 +14,7 @@ variable "kms_jwt_alias_name" {
 variable "kms_refresh_jwt_alias_name" {
   type = string
 }
+
+variable "s3_bucket_name" {
+  type = string
+}

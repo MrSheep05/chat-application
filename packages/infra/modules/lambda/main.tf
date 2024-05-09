@@ -8,20 +8,17 @@ resource "aws_iam_role" "lambda_roles" {
 resource "aws_lambda_function" "lambda_functions" {
   for_each = local.lambda_functions
 
-  filename         = format("%s/%s/%s.zip", local.lambda_build_output_directory, each.key, each.key)
+  s3_bucket = var.s3_bucket_name
+  s3_key = format("%s/%s.zip",each.key, each.key)
+  s3_object_version = data.aws_s3_object.lambdas_s3_zips[each.key].version_id
+
   function_name    = format("%s_%s", each.key, var.random_name)
   role             = aws_iam_role.lambda_roles[each.key].arn
   handler          = "index.handler"
-  source_code_hash = filebase64sha256(format("%s/%s/%s.zip", local.lambda_build_output_directory, each.key, each.key))
   runtime          = "nodejs20.x"
   memory_size      = "128"
   publish          = true
   timeout          = 5
-
-  # vpc_config {
-  #   subnet_ids         = ["subnet-08dc2e69ab35da1b3","subnet-0100c3c0275ffc08c","subnet-064ef51d666dcfafb"]
-  #   security_group_ids = ["sg-07ca0fe71834d1f08"]
-  # }
 
   dynamic "environment" {
     for_each = length(keys(each.value.environment_variables)) > 0 ? [each.value.environment_variables] : []
