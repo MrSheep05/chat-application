@@ -12,6 +12,7 @@ resource "aws_lambda_function" "lambda_functions" {
   s3_key = format("%s/%s.zip",each.key, each.key)
   s3_object_version = data.aws_s3_object.lambdas_s3_zips[each.key].version_id
 
+  source_code_hash = data.aws_s3_object.lambdas_s3_zips[each.key].etag
   function_name    = format("%s_%s", each.key, var.random_name)
   role             = aws_iam_role.lambda_roles[each.key].arn
   handler          = "index.handler"
