@@ -1,7 +1,4 @@
 locals {
-  lambda_root_directory         = "../lambdas"
-  lambda_build_output_directory = format("%s/dist", local.lambda_root_directory)
-
   lambda_functions = {
     "connect" = {
       allow_api_gateway_execution = "false"
