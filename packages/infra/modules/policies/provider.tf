@@ -2,6 +2,7 @@ resource "aws_iam_openid_connect_provider" "github-provider" {
   url = "https://token.actions.githubusercontent.com"
 
   client_id_list = [
+    "sts.amazonaws.com",
     "https://github.com/MrSheep05/chat-application"
   ]
 
