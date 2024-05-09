@@ -7,7 +7,7 @@ resource "aws_s3_bucket_public_access_block" "chat_lambdas_bucket_public_access"
 
   block_public_acls       = false
   block_public_policy     = true
-  ignore_public_acls      = true
+  ignore_public_acls      = false
   restrict_public_buckets = true
 }
 
