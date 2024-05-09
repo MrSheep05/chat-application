@@ -7,8 +7,11 @@ import { getConnections } from "@chat-lambdas-libs/database";
 
 export const handler: Handler<APIGatewayProxyEvent> = async (event) => {
   const data = getDataFromEvent(event);
+
   if (!data) return createResponse({ statusCode: 400 });
+
   const { messageId, connectionId } = data;
+
   try {
     const affectedRows = await removeMessage({ connectionId, messageId });
     if (affectedRows < 0) return createResponse({ statusCode: 403 });

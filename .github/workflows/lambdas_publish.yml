@@ -36,3 +36,12 @@ jobs:
           aws-region: eu-west-2
       - name: Copy files to the production bucket with the AWS CLI
         run: aws s3 sync dist s3://${{ secrets.AWS_S3_LAMBDAS_BUCKET }} --delete --acl public-read
+      - name: Create terraform run to update lamdas from s3://$
+        uses: indiesdev/curl@v1.1
+        with:
+          url: https://app.terraform.io/api/v2/runs
+          method: "POST"
+          accepted: 201
+          headers: '{ "Content-Type": "application/vnd.api+json" }'
+          bearer-token: ${{ secrets.TERRAFORM_TOKEN }}
+          body: '{"data":{"type":"runs","attributes":{"message":"Triggered by GitHub Action","auto-apply":true},"relationships":{"workspace":{"data":{"type":"workspaces","id":"${{ secrets.TERRAFORM_WORKSPACE_ID }}}}}}}'
