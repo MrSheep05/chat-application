@@ -24,6 +24,7 @@ export const handler: Handler<APIGatewayProxyEvent> = async (event) => {
     });
   } catch (error) {
     console.log("Failed to remove the message:", error);
+
     return createResponse({ statusCode: 500 });
   }
 };
