@@ -17,8 +17,6 @@ export const handler: Handler<APIGatewayProxyEvent> = async (event) => {
 
     const result = await client.send(command);
 
-    console.log("result Test publish", result);
-
     return { statusCode: 200 };
   } catch (error) {
     console.log("Unable to stop the database instance:", error);
