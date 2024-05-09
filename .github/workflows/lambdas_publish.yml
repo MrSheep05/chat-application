@@ -41,7 +41,8 @@ jobs:
         with:
           url: https://app.terraform.io/api/v2/runs
           method: "POST"
-          accepted: 201
+          accept: 201
           headers: '{ "Content-Type": "application/vnd.api+json" }'
           bearer-token: ${{ secrets.TERRAFORM_TOKEN }}
-          body: '{"data":{"type":"runs","attributes":{"message":"Triggered by GitHub Action","auto-apply":true},"relationships":{"workspace":{"data":{"type":"workspaces","id":"${{ secrets.TERRAFORM_WORKSPACE_ID }}}}}}}'
+          body: '{"data":{"type":"runs","attributes":{"message":"Triggered by GitHub Action","auto-apply":true},"relationships":{"workspace":{"data":{"type":"workspaces","id":"${{ secrets.TERRAFORM_WORKSPACE_ID }}"}}}}}'
+          log-response: true
