@@ -3,6 +3,7 @@ import { createResponse } from "@chat-lambdas-libs/response";
 
 import { GetDataFromEventFn } from "./types";
 import { createKeyPair, verifyTokens } from "./jwt";
+import { middleware } from "@chat-lambdas-libs/logs";
 
 const UNAUTHORISED_RESPONSE = createResponse({ statusCode: 401 });
 const { kmsJwtAliasName, kmsRefreshJwtAliasName } = process.env;
@@ -19,37 +20,38 @@ const getDataFromEvent: GetDataFromEventFn = (event) => {
   return {};
 };
 
-export const handler: Handler<APIGatewayProxyEvent> = async (event) => {
-  console.log("Received request:", event);
-  if (!kmsJwtAliasName || !kmsRefreshJwtAliasName) {
-    return createResponse({ statusCode: 500 });
+export const handler: Handler<APIGatewayProxyEvent> = middleware(
+  async (event) => {
+    if (!kmsJwtAliasName || !kmsRefreshJwtAliasName) {
+      return createResponse({ statusCode: 500 });
+    }
+
+    const { token, refreshToken } = getDataFromEvent(event);
+
+    if (!token || !refreshToken) {
+      return createResponse({ statusCode: 400 });
+    }
+
+    try {
+      await verifyTokens(token, refreshToken);
+    } catch (error) {
+      console.error("Verify Tokens Error:", error);
+      return UNAUTHORISED_RESPONSE;
+    }
+
+    try {
+      const { token: newToken, refreshToken: newRefreshToken } =
+        await createKeyPair(token);
+
+      return createResponse({
+        message: JSON.stringify({
+          token: newToken,
+          refreshToken: newRefreshToken,
+        }),
+        statusCode: 200,
+      });
+    } catch (error) {
+      return createResponse({ statusCode: 500 });
+    }
   }
-
-  const { token, refreshToken } = getDataFromEvent(event);
-
-  if (!token || !refreshToken) {
-    return createResponse({ statusCode: 400 });
-  }
-
-  try {
-    await verifyTokens(token, refreshToken);
-  } catch (error) {
-    console.error("Verify Tokens Error:", error);
-    return UNAUTHORISED_RESPONSE;
-  }
-
-  try {
-    const { token: newToken, refreshToken: newRefreshToken } =
-      await createKeyPair(token);
-
-    return createResponse({
-      message: JSON.stringify({
-        token: newToken,
-        refreshToken: newRefreshToken,
-      }),
-      statusCode: 200,
-    });
-  } catch (error) {
-    return createResponse({ statusCode: 500 });
-  }
-};
+);
