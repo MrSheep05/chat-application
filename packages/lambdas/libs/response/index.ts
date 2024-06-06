@@ -8,7 +8,7 @@ const TEMPLATES: ITemplates = {
 
 const createBody: CreateBodyFn = (statusCode, message) => {
   if (message) {
-    return JSON.stringify({ message });
+    return JSON.stringify(message);
   }
 
   if (statusCode in TEMPLATES) {
