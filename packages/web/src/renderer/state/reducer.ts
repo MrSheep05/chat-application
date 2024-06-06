@@ -12,7 +12,7 @@ export const reducer = (state: State, action: Action): State => {
     case Actions.newMessage: {
       const newMessages = [...state.messages, action.payload];
 
-      return { ...state, messages: newMessages };
+      return { ...state, messages: newMessages, isFetchingMessages: false };
     }
     case Actions.messages: {
       const newMessages = [...action.payload, ...state.messages];
