@@ -117,7 +117,7 @@ const processQuery: ProcessQueryFn = async ({ type, inputs = [] }) => {
   return new Promise((resolve, reject) => {
     connection.query(
       `CALL ${type}(${inputSQL});`,
-      [...inputs],
+      [...inputs].map((value) => (value === null ? "NULL" : value)),
       (error, results, fields) => {
         connection.end();
         if (error) {
