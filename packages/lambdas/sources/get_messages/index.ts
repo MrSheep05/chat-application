@@ -12,12 +12,9 @@ export const handler: Handler<APIGatewayProxyEvent> = middleware(
   async (event) => {
     const data = getDataFromEvent(event);
     if (!data) return createResponse({ statusCode: 400 });
-    console.info("Data is not undefined");
     const apiGatewayClient = createAPIGatewayClient(event);
     const { oldestMessageId, connectionId } = data;
     try {
-      console.info("getMessages");
-
       const messages = await getMessages(oldestMessageId);
       await postToConnection({
         apiGatewayClient,
