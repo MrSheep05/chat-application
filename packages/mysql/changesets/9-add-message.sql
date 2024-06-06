@@ -25,7 +25,7 @@ BEGIN
             BIN_TO_UUID(m.user_id) 'userId',
             u.username 'username',
             m.timestamp 'timestamp',
-            m.content 'content', 
+            m.content 'message', 
             m.visible 'visible'
     FROM chat.message m
     JOIN chat.user u ON u.id = m.user_id
