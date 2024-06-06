@@ -34,6 +34,7 @@ export const reducer = (state: State, action: Action): State => {
     }
     case Actions.tokensReceived: {
       const { token, refreshToken } = action.payload;
+      console.log(action.payload);
       const userData = getUserData(token);
 
       storeTokens({ token, refreshToken });

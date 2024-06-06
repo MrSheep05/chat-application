@@ -4,7 +4,7 @@ import { request } from '../utils/index';
 import { useNavigate } from 'react-router-dom';
 
 const WEBSOCKET_ADDRESS =
-  'wss://fwbvxi0c4f.execute-api.eu-west-2.amazonaws.com/production';
+  'wss://98h9l0rfyb.execute-api.eu-west-2.amazonaws.com/production';
 
 type OnMessage = (data: string) => void;
 type OnOpen = (websocket: WebSocket | undefined) => void;

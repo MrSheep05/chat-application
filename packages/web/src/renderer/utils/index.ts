@@ -1,4 +1,4 @@
-const BASE_URL = 'https://2imvaeu0x1.execute-api.eu-west-2.amazonaws.com/v1';
+const BASE_URL = 'https://58arvrdkse.execute-api.eu-west-2.amazonaws.com/v1';
 
 type RequestParams = {
   path: string;

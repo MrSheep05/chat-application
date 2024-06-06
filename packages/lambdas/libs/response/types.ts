@@ -2,14 +2,16 @@ export interface ITemplates {
   [code: number]: string;
 }
 
+type Message = string | { [key: string]: any };
+
 export type CreateBodyFn = (
   statusCode: number,
-  message?: string | object
+  message?: Message
 ) => string | undefined;
 
 interface ICreateResponseParams {
   statusCode?: number;
-  message?: string | object;
+  message?: Message;
 }
 
 export type CreateResponseFn = ({
@@ -20,5 +22,5 @@ export type CreateResponseFn = ({
   headers: {
     [key: string]: string;
   };
-  body?: string;
+  message?: Message;
 };
