@@ -8,6 +8,7 @@ import {
 } from "@chat-lambdas-libs/api-gateway";
 
 export const handler: Handler<APIGatewayProxyEvent> = async (event) => {
+  console.info("Event", event);
   const data = getDataFromEvent(event);
   if (!data) return createResponse({ statusCode: 400 });
 

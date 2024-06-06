@@ -113,14 +113,18 @@ const createOutput = ({
 const processQuery: ProcessQueryFn = async ({ type, inputs = [] }) => {
   const connection = await connect();
   const inputSQL = Array.from({ length: inputs.length }, () => "?").join(",");
-
+  const queryInputs = [...inputs].map((value) =>
+    value === null ? "NULL" : value
+  );
+  console.info(`QUERY INPUT`, queryInputs);
   return new Promise((resolve, reject) => {
     connection.query(
       `CALL ${type}(${inputSQL});`,
-      [...inputs].map((value) => (value === null ? "NULL" : value)),
+      queryInputs,
       (error, results, fields) => {
         connection.end();
         if (error) {
+          console.error(error);
           reject(error);
         }
         console.log(`RESULT`, results);
