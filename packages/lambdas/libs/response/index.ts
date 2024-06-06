@@ -7,6 +7,10 @@ const TEMPLATES: ITemplates = {
 };
 
 const createBody: CreateBodyFn = (statusCode, message) => {
+  if (typeof message === "string") {
+    return message;
+  }
+
   if (message) {
     return JSON.stringify(message);
   }
@@ -20,13 +24,11 @@ export const createResponse: CreateResponseFn = ({
   statusCode = 200,
   message,
 }) => {
-  const body = createBody(statusCode, message);
-
   return {
     statusCode,
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
-    body,
+    body: createBody(statusCode, message),
   };
 };

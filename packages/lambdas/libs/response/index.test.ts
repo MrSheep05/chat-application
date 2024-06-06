@@ -46,7 +46,20 @@ describe("Given the creteResponse function", () => {
     });
 
     expect(response).toStrictEqual({
-      body: JSON.stringify({ message: "Everything went well" }),
+      body: "Everything went well",
+      headers: { "Access-Control-Allow-Origin": "*" },
+      statusCode: 200,
+    });
+  });
+
+  it("should allow to override the body with a custom object message", () => {
+    const response = createResponse({
+      statusCode: 200,
+      message: { something: "Hello", somethingElse: "There" },
+    });
+
+    expect(response).toStrictEqual({
+      body: JSON.stringify({ something: "Hello", somethingElse: "There" }),
       headers: { "Access-Control-Allow-Origin": "*" },
       statusCode: 200,
     });
