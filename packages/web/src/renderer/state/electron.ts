@@ -1,6 +1,5 @@
 export const getTokens = () => {
   const { store } = window.electron;
-
   const token = store.get('token');
   const refreshToken = store.get('refreshToken');
 
@@ -18,7 +17,6 @@ interface StoreTokensProps {
 
 export const storeTokens = ({ token, refreshToken }: StoreTokensProps) => {
   const { store } = window.electron;
-
   store.set('token', token);
   store.set('refreshToken', refreshToken);
 };
