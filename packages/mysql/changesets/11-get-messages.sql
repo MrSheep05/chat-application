@@ -13,7 +13,7 @@ BEGIN
         ), selected_message_row AS (
             SELECT RowNumber
             FROM all_message_rows
-            WHERE id = UUID_TO_BIN(input_message_id)
+            WHERE id = input_message_id
         )
         SELECT RowNumber
         INTO offset
@@ -21,8 +21,8 @@ BEGIN
     END IF;
 	
     SELECT  
-        BIN_TO_UUID(m.id) 'id',
-        BIN_TO_UUID(m.user_id) 'user_id',
+        m.id 'id',
+        m.user_id 'user_id',
         u.username 'username',
         m.timestamp 'timestamp',
         m.content 'message',

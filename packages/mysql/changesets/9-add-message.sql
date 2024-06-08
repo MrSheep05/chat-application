@@ -17,12 +17,12 @@ BEGIN
         SIGNAL SQLSTATE '10000' SET MESSAGE_TEXT = 'Content is null or empty', MYSQL_ERRNO = 1001;
     END IF;
 
-    SET @id = (UUID_TO_BIN(UUID(), true));
+    SET @id = UUID();
 
-    INSERT INTO chat.message (id, user_id, content) VALUES (@id, UUID_TO_BIN(input_user_id), input_content);
+    INSERT INTO chat.message (id, user_id, content) VALUES (@id, input_user_id, input_content);
     
-    SELECT  BIN_TO_UUID(m.id) 'id',
-            BIN_TO_UUID(m.user_id) 'userId',
+    SELECT  m.id 'id',
+            m.user_id 'userId',
             u.username 'username',
             m.timestamp 'timestamp',
             m.content 'message', 

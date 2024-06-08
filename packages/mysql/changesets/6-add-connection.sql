@@ -14,6 +14,6 @@ BEGIN
     END IF;
 
     INSERT INTO chat.connection (id) VALUES (input_connection_id);
-    INSERT INTO chat.user_connection (connection_id, user_id) VALUES (input_connection_id, UUID_TO_BIN(input_user_id));
+    INSERT INTO chat.user_connection (connection_id, user_id) VALUES (input_connection_id, input_user_id);
 END//
 -- rollback DROP PROCEDURE AddConnection
