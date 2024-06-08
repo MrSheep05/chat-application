@@ -20,7 +20,7 @@ BEGIN
         FROM chat.user_connection
         WHERE connection_id = input_connection_id
     )
-    AND id = UUID_TO_BIN(input_message_id);
+    AND id = input_message_id;
 
     SELECT ROW_COUNT() 'updateCount';
 END//

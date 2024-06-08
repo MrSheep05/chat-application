@@ -12,7 +12,7 @@ BEGIN
         THEN
             SIGNAL SQLSTATE '10002' SET MESSAGE_TEXT = 'User does not exist', MYSQL_ERRNO = 1001;
         ELSE
- 	       SELECT BIN_TO_UUID(id) 'id', username, password FROM chat.user WHERE username = input_username LIMIT 1;
+ 	       SELECT id, username, password FROM chat.user WHERE username = input_username LIMIT 1;
     END IF;
 END//
 -- rollback DROP PROCEDURE GetUserData
