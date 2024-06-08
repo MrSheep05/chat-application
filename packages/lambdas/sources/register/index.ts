@@ -13,7 +13,7 @@ export const handler: Handler<APIGatewayProxyEvent> = middleware(
     if (!hashedPassword) return createResponse({ statusCode: 400 });
 
     try {
-      await registerUser({ username, password });
+      await registerUser({ username, password: hashedPassword });
     } catch (error) {
       console.error("Failed to execute the procedure", error);
       return createResponse({
