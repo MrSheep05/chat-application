@@ -11,7 +11,7 @@ CREATE TABLE chat.user (
 -- changeset liquibase:create_message_table
 CREATE TABLE chat.message (
   `id` VARCHAR(36) UNIQUE PRIMARY KEY NOT NULL DEFAULT (UUID()),
-  `user_id` BINARY(16) NOT NULL,
+  `user_id` VARCHAR(36) NOT NULL,
   `timestamp` TIMESTAMP NOT NULL,
   `content` TEXT NOT NULL,
   `visible` BOOLEAN NOT NULL DEFAULT true
