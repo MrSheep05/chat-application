@@ -18,6 +18,7 @@ BEGIN
         SIGNAL SQLSTATE '10001' SET MESSAGE_TEXT = 'User already exists', MYSQL_ERRNO = 1001;
     ELSE
         INSERT INTO chat.user (username, password) VALUES (input_username, input_password);
+        SELECT ROW_COUNT() 'updateCount';
     END IF;
 END //
 -- rollback DROP PROCEDURE RegisterUser
