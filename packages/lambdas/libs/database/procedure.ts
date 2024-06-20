@@ -116,27 +116,36 @@ const createOutput = ({
 
 const processQuery: ProcessQueryFn = async ({ type, inputs = [] }) => {
   const connection = await connect();
-  const inputSQL = Array.from({ length: inputs.length }, () => "?").join(",");
-  const queryInputs = [...inputs].map((value) =>
-    value === null ? "NULL" : value
+  const [inputSQL, queryInputs] = inputs.reduce<[string[], any[]]>(
+    ([inputSQL, queryInputs], val) => {
+      return val === null
+        ? [[...inputSQL, "NULL"], [...queryInputs]]
+        : [
+            [...inputSQL, "?"],
+            [...queryInputs, val],
+          ];
+    },
+    [[], []]
   );
+  // const inputSQL = Array.from({ length: inputs.length }, () => "?").join(",");
+  // const queryInputsTwo = [...inputs].map((value) =>
+  //   value === null ? "NULL" : value
+  // );
+  const query = `CALL ${type}(${inputSQL.join(",")});`;
   console.info(`QUERY INPUT`, queryInputs);
+  console.info(`QUERY`, query);
   return new Promise((resolve, reject) => {
-    connection.query(
-      `CALL ${type}(${inputSQL});`,
-      queryInputs,
-      (error, results, fields) => {
-        connection.end();
-        if (error) {
-          console.error(error);
-          reject(error);
-        }
-        console.log(`RESULT`, results);
-        console.log(results);
-        console.log(`FIELDS`, fields);
-        resolve({ results, fields });
+    connection.query(query, queryInputs, (error, results, fields) => {
+      connection.end();
+      if (error) {
+        console.error(error);
+        reject(error);
       }
-    );
+      console.log(`RESULT`, results);
+      console.log(results);
+      console.log(`FIELDS`, fields);
+      resolve({ results, fields });
+    });
   });
 };
 
