@@ -115,7 +115,8 @@ type GetMessagesProcedure = {
 type GetUserDataProcedure = {
   type: Procedure.GetUserData;
   payload: {
-    username: string;
+    username?: string;
+    connectionId?: string;
   };
 };
 

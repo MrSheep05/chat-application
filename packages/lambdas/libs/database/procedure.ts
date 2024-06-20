@@ -29,10 +29,14 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
       return createOutput({ result, type: ProcedureOutput.GetMessages });
     }
     case Procedure.GetUserData: {
-      const { username } = procedure.payload;
+      const { username, connectionId } = {
+        username: null,
+        connectionId: null,
+        ...procedure.payload,
+      };
       const result = await processQuery({
         type,
-        inputs: [username],
+        inputs: [username, connectionId],
       });
       return createOutput({
         result,
