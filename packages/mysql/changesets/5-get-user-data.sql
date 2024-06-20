@@ -9,7 +9,7 @@ BEGIN
     END IF;
 
     IF NOT EXISTS (
-        SELECT 1 FROM chat.user u JOIN chat.user_connection uc ON uc.user_id = u.id
+        SELECT 1 FROM chat.user u LEFT JOIN chat.user_connection uc ON uc.user_id = u.id
         WHERE 
             CASE WHEN input_username IS NOT NULL AND input_username != '' 
             THEN u.username = input_username ELSE 1=1 END 
@@ -21,7 +21,7 @@ BEGIN
     END IF;
 
     SELECT id, username, password FROM chat.user u
-    JOIN chat.user_connection uc ON uc.user_id = u.id
+    LEFT JOIN chat.user_connection uc ON uc.user_id = u.id
     WHERE 
     CASE WHEN input_username IS NOT NULL AND input_username != '' 
     THEN u.username = input_username ELSE 1=1 END 
