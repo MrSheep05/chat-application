@@ -15,6 +15,6 @@ variable "kms_refresh_jwt_alias_name" {
   type = string
 }
 
-variable "s3_bucket_name" {
+variable "s3_lambda_bucket_name" {
   type = string
 }

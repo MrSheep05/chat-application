@@ -11,16 +11,16 @@ resource "aws_s3_bucket_public_access_block" "chat_lambdas_bucket_public_access"
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_ownership_controls" "chat_s3_ownership" {
+resource "aws_s3_bucket_ownership_controls" "chat_s3_lambdas_ownership" {
   bucket = aws_s3_bucket.chat_lambdas_bucket.id
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
 }
 
-resource "aws_s3_bucket_acl" "chat_s3_acl" {
+resource "aws_s3_bucket_acl" "chat_s3_lambdas_acl" {
   depends_on = [
-    aws_s3_bucket_ownership_controls.chat_s3_ownership,
+    aws_s3_bucket_ownership_controls.chat_s3_lambdas_ownership,
     aws_s3_bucket_public_access_block.chat_lambdas_bucket_public_access,
   ]
 
