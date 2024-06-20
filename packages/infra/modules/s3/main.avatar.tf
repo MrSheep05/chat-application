@@ -18,7 +18,7 @@ resource "aws_s3_bucket_ownership_controls" "chat_s3_avatars_ownership" {
   }
 }
 
-resource "aws_s3_bucket_acl" "chat_s3_acl" {
+resource "aws_s3_bucket_acl" "chat_s3_avatars_acl" {
   depends_on = [
     aws_s3_bucket_ownership_controls.chat_s3_lambdas_ownership,
     aws_s3_bucket_public_access_block.chat_lambdas_bucket_public_access,
