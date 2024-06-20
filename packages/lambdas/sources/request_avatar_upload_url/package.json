@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "@chat-lambdas/request_avatar_upload_url",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-rds": "3.484.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "8.10.136"
+  }
+}
