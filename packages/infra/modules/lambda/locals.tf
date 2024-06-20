@@ -107,7 +107,7 @@ locals {
       permissions = {
         kms                = "none"
         manage_connections = "false"
-        rds                = "none"
+        rds                = "connect"
       }
     }
     "start_rds" = {
