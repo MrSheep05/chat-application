@@ -8,7 +8,7 @@ resource "aws_iam_role" "lambda_roles" {
 resource "aws_lambda_function" "lambda_functions" {
   for_each = local.lambda_functions
 
-  s3_bucket = var.s3_bucket_name
+  s3_bucket = var.s3_lambda_bucket_name
   s3_key = format("%s/%s.zip",each.key, each.key)
   s3_object_version = data.aws_s3_object.lambdas_s3_zips[each.key].version_id
 

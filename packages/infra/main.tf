@@ -14,7 +14,7 @@ module "s3" {
 module "lambda" {
   source = "./modules/lambda"
 
-  s3_bucket_name = module.s3.bucket_name
+  s3_lambda_bucket_name             = module.s3.lambda_bucket_name
   kms_jwt_alias_name         = module.kms.kms_jwt_alias_name
   kms_refresh_jwt_alias_name = module.kms.kms_refresh_jwt_alias_name
 
@@ -51,5 +51,5 @@ module "policies" {
   api_gateway_role_name = module.api_gateway_v2.api_gateway_role_name
   kms_jwt_arn           = module.kms.kms_jwt_arn
   kms_refresh_jwt_arn   = module.kms.kms_refresh_jwt_arn
-  s3_chat_lambdas_arn   = module.s3.arn
+  s3_chat_lambdas_arn   = module.s3.lambda_bucket_arn
 }
