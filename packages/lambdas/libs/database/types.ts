@@ -89,6 +89,7 @@ type GetConnectionsResponse = {
     userId: string;
   }[];
 };
+
 type AddConnectionProcedure = {
   type: Procedure.AddConnection;
   payload: {
