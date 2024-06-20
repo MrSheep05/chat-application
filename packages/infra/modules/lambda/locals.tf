@@ -99,6 +99,17 @@ locals {
         rds                = "connect"
       }
     }
+
+    "request_avatar_upload_url" = {
+      allow_api_gateway_execution = "false"
+      route_key = "requestAvatarUploadUrl"
+      environment_variables       = {}
+      permissions = {
+        kms                = "none"
+        manage_connections = "false"
+        rds                = "none"
+      }
+    }
     "start_rds" = {
       allow_api_gateway_execution = "true"
       environment_variables = {
