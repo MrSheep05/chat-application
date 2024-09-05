@@ -3,6 +3,10 @@ import { APIGatewayProxyEvent, Handler } from "aws-lambda";
 import { getUserData } from "./database";
 import { createResponse } from "@chat-lambdas-libs/response";
 import { createPresignedUrl } from "@chat-lambdas-libs/s3";
+import {
+  createAPIGatewayClient,
+  postToConnection,
+} from "@chat-lambdas-libs/api-gateway";
 
 export const handler: Handler<APIGatewayProxyEvent> = middleware(
   async (event) => {
@@ -21,6 +25,7 @@ export const handler: Handler<APIGatewayProxyEvent> = middleware(
     if (!bucketName || !connectionId) {
       return createResponse({ statusCode: 500 });
     }
+    const apiGatewayClient = createAPIGatewayClient(event);
 
     const userData = await getUserData(connectionId);
 
@@ -34,11 +39,17 @@ export const handler: Handler<APIGatewayProxyEvent> = middleware(
       path,
     });
 
+    await postToConnection({
+      connectionId,
+      apiGatewayClient: apiGatewayClient,
+      message: JSON.stringify({
+        action: "requestAvatarUploadUrl",
+        payload: { url: presignedUrl },
+      }),
+    });
+
     return createResponse({
       statusCode: 200,
-      message: {
-        presignedUrl,
-      },
     });
   }
 );
