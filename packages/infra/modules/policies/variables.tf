@@ -33,3 +33,7 @@ variable "s3_chat_lambdas_arn" {
 variable "s3_avatar_arn" {
   type = string
 }
+
+variable "s3_avatar_id" {
+  type = string
+}
