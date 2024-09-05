@@ -137,7 +137,7 @@ data "aws_iam_policy_document" "lambda_policies" {
     }
   }
 
-   dynamic "statement" {
+  dynamic "statement" {
     for_each = each.value.permissions.s3_avatar == "write" ? [each.key] : []
 
     content {
