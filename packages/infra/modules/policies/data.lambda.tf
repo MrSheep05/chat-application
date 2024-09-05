@@ -147,7 +147,7 @@ data "aws_iam_policy_document" "lambda_policies" {
       ]
       effect = "Allow"
       resources = [
-        var.s3_avatar_arn
+        format("%s/users/*", var.s3_avatar_arn),
       ]
     }
   }
