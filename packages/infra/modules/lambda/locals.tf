@@ -103,7 +103,9 @@ locals {
     "request_avatar_upload_url" = {
       allow_api_gateway_execution = "false"
       route_key = "requestAvatarUploadUrl"
-      environment_variables       = {}
+      environment_variables       = {
+        bucketName = var.s3_avatar_bucket_name
+      }
       permissions = {
         kms                = "none"
         manage_connections = "false"
