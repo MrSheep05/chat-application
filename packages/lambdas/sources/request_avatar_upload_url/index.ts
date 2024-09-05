@@ -32,7 +32,7 @@ export const handler: Handler<APIGatewayProxyEvent> = middleware(
     console.info("USERDATA ", userData);
 
     const { id } = userData;
-    const path = `/users/${id}/avatar.png`;
+    const path = `users/${id}/avatar.png`;
 
     const presignedUrl = await createPresignedUrl({
       bucket: bucketName,
