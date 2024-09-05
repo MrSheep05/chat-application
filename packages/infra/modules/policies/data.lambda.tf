@@ -138,7 +138,7 @@ data "aws_iam_policy_document" "lambda_policies" {
   }
 
    dynamic "statement" {
-    for_each = each.value.permissions.avatar_s3 == "write" ? [each.key] : []
+    for_each = each.value.permissions.s3_avatar == "write" ? [each.key] : []
 
     content {
       sid = "RoleForPuttingObjectInsideS3"
