@@ -119,7 +119,7 @@ const processQuery: ProcessQueryFn = async ({ type, inputs = [] }) => {
   const [inputSQL, queryInputs] = inputs.reduce<[string[], any[]]>(
     ([inputSQL, queryInputs], val) => {
       return val === null
-        ? [[...inputSQL, "NULL"], [...queryInputs]]
+        ? [[...inputSQL, "NULL"], queryInputs]
         : [
             [...inputSQL, "?"],
             [...queryInputs, val],
