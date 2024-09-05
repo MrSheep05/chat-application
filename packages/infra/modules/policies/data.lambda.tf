@@ -136,4 +136,19 @@ data "aws_iam_policy_document" "lambda_policies" {
       ]
     }
   }
+
+   dynamic "statement" {
+    for_each = each.value.permissions.avatar_s3 == "write" ? [each.key] : []
+
+    content {
+      sid = "RoleForPuttingObjectInsideS3"
+      actions = [
+        "s3:PutObject",
+      ]
+      effect = "Allow"
+      resources = [
+        var.s3_avatar_arn
+      ]
+    }
+  }
 }

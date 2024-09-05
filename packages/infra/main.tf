@@ -53,4 +53,5 @@ module "policies" {
   kms_jwt_arn           = module.kms.kms_jwt_arn
   kms_refresh_jwt_arn   = module.kms.kms_refresh_jwt_arn
   s3_chat_lambdas_arn   = module.s3.lambda_bucket_arn
+  s3_avatar_arn         = module.s3.avatar_bucket_arn
 }
