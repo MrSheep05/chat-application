@@ -22,6 +22,10 @@ data "aws_iam_policy_document" "s3_avatar_public_read" {
     actions = [
       "s3:GetObject",
     ]
+    principals {
+        type = "AWS"
+        identifiers = [""]
+    }
     effect = "Allow"
     resources = [
       var.s3_avatar_arn,
