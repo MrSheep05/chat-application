@@ -8,6 +8,7 @@ locals {
         kms                = "none"
         manage_connections = "false"
         rds                = "connect"
+        s3_avatar          = "none"
       }
     },
     "disconnect" = {
@@ -18,6 +19,7 @@ locals {
         kms                = "none"
         manage_connections = "false"
         rds                = "connect"
+        s3_avatar          = "none"
       }
     },
     "message" = {
@@ -28,6 +30,7 @@ locals {
         kms                = "none"
         manage_connections = "true"
         rds                = "connect"
+        s3_avatar          = "none"
       }
     },
     "remove" = {
@@ -38,6 +41,7 @@ locals {
         kms                = "none"
         manage_connections = "true"
         rds                = "connect"
+        s3_avatar          = "none"
       }
     },
     "register" = {
@@ -49,6 +53,7 @@ locals {
         kms                = "none"
         manage_connections = "false"
         rds                = "connect"
+        s3_avatar          = "none"
       }
     },
     "login" = {
@@ -62,6 +67,7 @@ locals {
         kms                = "sign"
         manage_connections = "false"
         rds                = "connect"
+        s3_avatar          = "none"
       }
     }
     "refresh" = {
@@ -75,6 +81,7 @@ locals {
         kms                = "sign-and-verify"
         manage_connections = "false"
         rds                = "none"
+        s3_avatar          = "none"
       }
     }
     "authorize" = {
@@ -87,6 +94,7 @@ locals {
         kms                = "verify"
         manage_connections = "false"
         rds                = "none"
+        s3_avatar          = "none"
       }
     }
     "get_messages" = {
@@ -97,19 +105,21 @@ locals {
         kms                = "none"
         manage_connections = "true"
         rds                = "connect"
+        s3_avatar          = "none"
       }
     }
 
     "request_avatar_upload_url" = {
       allow_api_gateway_execution = "false"
-      route_key = "requestAvatarUploadUrl"
-      environment_variables       = {
+      route_key                   = "requestAvatarUploadUrl"
+      environment_variables = {
         bucketName = var.s3_avatar_bucket_name
       }
       permissions = {
         kms                = "none"
         manage_connections = "true"
         rds                = "connect"
+        s3_avatar          = "write"
       }
     }
     "start_rds" = {
@@ -121,6 +131,7 @@ locals {
         kms                = "none"
         manage_connections = "false"
         rds                = "start"
+        s3_avatar          = "none"
       }
     }
     "stop_rds" = {
@@ -132,6 +143,7 @@ locals {
         kms                = "none"
         manage_connections = "false"
         rds                = "stop"
+        s3_avatar          = "none"
       }
     }
   }
