@@ -21,6 +21,9 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import showNotification from './utils/notification';
 
+import { handleFileDialog } from './utils/fileDialog';
+import { Channel } from '../common/types';
+
 const store = new Store();
 
 ipcMain.on('electron-store-get', async (event, val) => {
@@ -145,8 +148,20 @@ app
   })
   .catch(console.log);
 
-ipcMain.on('message', (_event, args) => {
+ipcMain.on(Channel.Message, (_event, args) => {
   if (!mainWindow?.isFocused()) {
     showNotification(app, args);
+  }
+});
+
+ipcMain.on(Channel.FileDialog, async (event, args) => {
+  const [fileDialogOptions] = args;
+
+  try {
+    const fileBuffer = await handleFileDialog(fileDialogOptions);
+
+    event.sender.send(Channel.FileDialog, fileBuffer);
+  } catch (error) {
+    console.error('Unable to fulfill the FileDialog request', error);
   }
 });

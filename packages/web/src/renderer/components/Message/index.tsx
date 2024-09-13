@@ -1,4 +1,3 @@
-import avatarTemplate from '../../../../assets/avatar.jpeg';
 import {
   StyledDate,
   StyledContainer,
@@ -7,11 +6,11 @@ import {
   StyledContent,
   StyledHeader,
   StyledMoreOptions,
-  StyledAvatar,
 } from './styled';
 import { MessageBoxProps } from './types';
 import MessageTooltip from '../MessageTooltip';
 import { formatDate } from '../../utils/date';
+import Avatar from '../Avatar';
 
 const Message = ({
   timestamp,
@@ -25,7 +24,7 @@ const Message = ({
       <StyledMoreOptions id="more-options">
         <MessageTooltip userId={userId} index={index} />
       </StyledMoreOptions>
-      <StyledAvatar src={avatarTemplate} />
+      <Avatar userId={userId} />
       <StyledContent>
         <StyledHeader>
           <StyledUsername variant="caption">{user}</StyledUsername>

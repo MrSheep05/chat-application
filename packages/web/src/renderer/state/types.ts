@@ -32,6 +32,7 @@ export enum Actions {
   remove = 'remove',
   tokensReceived = 'tokensReceived',
   setIsFetching = 'setIsFetching',
+  requestAvatarUploadUrl = 'requestAvatarUploadUrl',
 }
 
 type SetWebSocketAction = {
