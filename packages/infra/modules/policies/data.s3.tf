@@ -24,7 +24,7 @@ data "aws_iam_policy_document" "s3_avatar_public_read" {
     ]
     principals {
         type = "AWS"
-        identifiers = [""]
+        identifiers = ["*"]
     }
     effect = "Allow"
     resources = [
