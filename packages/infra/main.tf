@@ -17,6 +17,7 @@ module "lambda" {
 
   s3_lambda_bucket_name      = module.s3.lambda_bucket_name
   s3_avatar_bucket_name      = module.s3.avatar_bucket_name
+  s3_avatar_bucket_arn       = module.s3.avatar_bucket_arn
   kms_jwt_alias_name         = module.kms.kms_jwt_alias_name
   kms_refresh_jwt_alias_name = module.kms.kms_refresh_jwt_alias_name
 
