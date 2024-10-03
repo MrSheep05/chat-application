@@ -27,3 +27,13 @@ resource "aws_s3_bucket_acl" "chat_s3_avatars_acl" {
   bucket = aws_s3_bucket.chat_lambdas_bucket.id
   acl    = "public-read"
 }
+
+resource "aws_s3_bucket_cors_configuration" "avatar_cors_policy" {
+  bucket = aws_s3_bucket.chat_avatars_bucket.id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["GET", "PUT"]
+    allowed_origins = ["*"]
+  }
+}
