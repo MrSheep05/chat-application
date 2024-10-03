@@ -11,6 +11,7 @@ module "s3" {
 
   random_name = module.random.random_name
 }
+
 module "lambda" {
   source = "./modules/lambda"
 

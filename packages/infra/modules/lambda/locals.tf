@@ -146,5 +146,17 @@ locals {
         s3_avatar          = "none"
       }
     }
+    "on_avatar_upload" = {
+      allow_api_gateway_execution = "false"
+      environment_variables = {
+        databaseInstanceIdentifier = "tprzytula"
+      }
+      permissions = {
+        kms                = "none"
+        manage_connections = "true"
+        rds                = "connect"
+        s3_avatar          = "none"
+      }
+    }
   }
 }

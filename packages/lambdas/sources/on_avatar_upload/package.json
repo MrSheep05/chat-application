@@ -1,11 +1,11 @@
 {
   "private": true,
-  "name": "@chat-lambdas/refresh",
+  "name": "@chat-lambdas/on_avatar_upload",
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
-    "@chat-lambdas-libs/kms": "^1.0.0",
-    "@chat-lambdas-libs/jwt": "^1.0.0"
+    "@aws-sdk/client-rds": "3.484.0",
+    "@chat-lambdas-libs/database": "1.0.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.136"
