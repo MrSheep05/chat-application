@@ -1,5 +1,5 @@
 import { styled } from '@mui/system';
-import { Avatar, Box, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 export const StyledContainer = styled(Box)({
   display: 'flex',
@@ -48,5 +48,3 @@ export const StyledHeader = styled(Box)({
 });
 
 export const StyledMoreOptions = styled(Box)({});
-
-export const StyledAvatar = styled(Avatar)({});

@@ -55,7 +55,7 @@ export const onWebsocketMessage = (
     payload: WebSocketMessagePayload;
   };
 
-  if (!action && !Object.keys(WEBSOCKET_ACTIONS).includes(action)) return;
+  if (!action || !Object.keys(WEBSOCKET_ACTIONS).includes(action)) return;
 
   WEBSOCKET_ACTIONS[action]({ dispatch, state, payload });
 };
