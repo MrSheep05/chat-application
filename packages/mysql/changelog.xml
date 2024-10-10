@@ -21,4 +21,5 @@
     <include file="./changesets/11-get-messages.sql"/>
     <include file="./changesets/12-timestamp-as-integer.sql"/>
     <include file="./changesets/13-user-profile.sql"/>
+    <include file="./changesets/14-user-profile-procedures.sql"/>
 </databaseChangeLog> 
