@@ -21,9 +21,9 @@ BEGIN
     ELSE
         SET @id = UUID();
         INSERT INTO chat.user (id,username, password) VALUES (@id,input_username, input_password);
-        SET @updated_rows = SELECT ROW_COUNT() 'updateCount';
+        SET @updated_rows = ROW_COUNT();
         INSERT INTO chat.user_profile (user_id) VALUES (@id);
-        SELECT @updated_rows;
+        SELECT @updated_rows 'updatedCount';
     END IF;
 END //
 
