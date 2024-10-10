@@ -13,5 +13,5 @@ ALTER TABLE `user_profile` ADD CONSTRAINT `fk__user_profile__user_id` FOREIGN KE
 -- rollback ALTER TABLE message DROP FOREIGN KEY `fk__user_profile__user_id`;
 
 -- changeset liquibase:existing_users_profile
-INSERT INTO chat.user_profile (user_id) VALUES (SELECT id FROM user);
+INSERT INTO chat.user_profile (user_id) SELECT id user_id FROM user;
 -- rollback DELETE FROM chat.user_profile
