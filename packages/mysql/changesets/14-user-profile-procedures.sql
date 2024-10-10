@@ -27,12 +27,12 @@ BEGIN
     END IF;
 END //
 
--- rollback DROP PROCEDURE RegisterUser
+-- rollback DROP PROCEDURE RegisterUser //
 -- rollback CREATE PROCEDURE RegisterUser(IN input_username VARCHAR(20), IN input_password VARCHAR(44))
 -- rollback BEGIN
 -- rollback     IF input_username IS NULL OR input_username = ''
 -- rollback     THEN
--- rollback         SIGNAL SQLSTATE '10000' SET MESSAGE_TEXT = 'Username is null or empty', MYSQL_ERRNO = 1001;
+-- rollback          SIGNAL SQLSTATE '10000' SET MESSAGE_TEXT = 'Username is null or empty', MYSQL_ERRNO = 1001;
 -- rollback     END IF;
 -- rollback     
 -- rollback     IF input_password IS NULL OR input_password = ''
