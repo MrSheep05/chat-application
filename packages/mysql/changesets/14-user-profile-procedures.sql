@@ -49,7 +49,7 @@ END //
 -- rollback     END IF;
 -- rollback END //
 
--- changeset liquibase:add_procedure_update_profile endDelimiter://
+-- changeset liquibase:add_procedure_update_profile_avatar endDelimiter://
 CREATE PROCEDURE UpdateUserProfileAvatar(IN input_user_id VARCHAR(36), IN input_avatar_key VARCHAR(255))
 BEGIN
      IF input_user_id IS NULL
