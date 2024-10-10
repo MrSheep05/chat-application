@@ -1,9 +1,9 @@
-import { APIGatewayProxyEvent, Handler, Context, Callback } from "aws-lambda";
+import { Handler, Context, Callback } from "aws-lambda";
 import { createResponse } from "@chat-lambdas-libs/response";
 
 export const middleware =
-  (handler: Handler<APIGatewayProxyEvent>) =>
-  async (event: APIGatewayProxyEvent, context: Context, callback: Callback) => {
+  <T>(handler: Handler<T>) =>
+  async (event: T, context: Context, callback: Callback) => {
     console.log("Event:", event);
 
     try {

@@ -1,8 +1,8 @@
 import { middleware } from "@chat-lambdas-libs/logs";
-import { APIGatewayProxyEvent, Handler } from "aws-lambda";
+import { S3ObjectCreatedNotificationEvent, Handler } from "aws-lambda";
 
-export const handler: Handler<APIGatewayProxyEvent> = middleware(
+export const handler: Handler<S3ObjectCreatedNotificationEvent> = middleware(
   async (event) => {
-    console.info("EVENT", event);
+    console.info("EVENT", JSON.stringify(event));
   }
 );
