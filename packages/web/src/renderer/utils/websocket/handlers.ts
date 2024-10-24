@@ -9,12 +9,19 @@ import {
 } from './types';
 
 const onNewMessage: WebSocketHandler = ({ dispatch, state, payload }) => {
-  const { message, username, id, timestamp, user_id } = payload;
+  const { message, username, id, timestamp, user_id, avatarKey } = payload;
   console.log('OnNewMessage response', payload);
 
   dispatch({
     type: Actions.newMessage,
-    payload: { message, user: username, id, timestamp, userId: user_id },
+    payload: {
+      message,
+      user: username,
+      id,
+      timestamp,
+      userId: user_id,
+      avatarKey,
+    },
   });
 
   if (user_id !== state?.userData?.userId) {

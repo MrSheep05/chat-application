@@ -29,4 +29,5 @@ export interface ChatMessage {
   visible: number; // TODO: visible: boolean
   username: string;
   timestamp: number;
+  avatarKey: string;
 }
