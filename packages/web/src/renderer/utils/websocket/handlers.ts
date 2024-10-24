@@ -9,7 +9,7 @@ import {
 } from './types';
 
 const onNewMessage: WebSocketHandler = ({ dispatch, state, payload }) => {
-  const { message, username, id, timestamp, user_id, avatarKey } = payload;
+  const { message, username, id, timestamp, userId, avatarKey } = payload;
   console.log('OnNewMessage response', payload);
 
   dispatch({
@@ -19,12 +19,12 @@ const onNewMessage: WebSocketHandler = ({ dispatch, state, payload }) => {
       user: username,
       id,
       timestamp,
-      userId: user_id,
+      userId,
       avatarKey,
     },
   });
 
-  if (user_id !== state?.userData?.userId) {
+  if (userId !== state?.userData?.userId) {
     window.electron.ipcRenderer.sendMessage('message', [username, message]);
   }
 };
