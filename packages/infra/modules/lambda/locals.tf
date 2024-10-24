@@ -146,18 +146,18 @@ locals {
         s3_avatar          = "none"
       }
     }
-    "on_avatar_proccessed" = {
-      allow_api_gateway_execution = "false"
-      environment_variables = {
-        databaseInstanceIdentifier = "tprzytula"
-      }
-      permissions = {
-        kms                = "none"
-        manage_connections = "false"
-        rds                = "connect"
-        s3_avatar          = "none"
-      }
-    }
+    # "on_avatar_proccessed" = {
+    #   allow_api_gateway_execution = "false"
+    #   environment_variables = {
+    #     databaseInstanceIdentifier = "tprzytula"
+    #   }
+    #   permissions = {
+    #     kms                = "none"
+    #     manage_connections = "false"
+    #     rds                = "connect"
+    #     s3_avatar          = "none"
+    #   }
+    # }
     # "on_avatar_uploaded" = {
     #   allow_api_gateway_execution = "false"
     #   environment_variables = {
