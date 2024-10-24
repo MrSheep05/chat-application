@@ -148,6 +148,24 @@ data "aws_iam_policy_document" "lambda_policies" {
       effect = "Allow"
       resources = [
         format("%s/users/*", var.s3_avatar_arn),
+        format("%s/uploads/*", var.s3_avatar_arn),
+      ]
+    }
+  }
+
+    dynamic "statement" {
+    for_each = each.value.permissions.s3_avatar == "read-write" ? [each.key] : []
+
+    content {
+      sid = "RoleForPuttingObjectInsideS3"
+      actions = [
+        "s3:PutObject",
+        "s3:GetObject"
+      ]
+      effect = "Allow"
+      resources = [
+        format("%s/users/*", var.s3_avatar_arn),
+        format("%s/uploads/*", var.s3_avatar_arn),
       ]
     }
   }
