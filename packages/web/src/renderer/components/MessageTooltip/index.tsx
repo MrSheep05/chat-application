@@ -18,6 +18,7 @@ const MessageTooltip = ({ userId, index }: MessageTooltipProps) => {
       );
     }
   };
+
   if (userData?.userId !== userId || !userData) {
     return <></>;
   }

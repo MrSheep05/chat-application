@@ -33,6 +33,7 @@ export enum Procedure {
   RegisterUser = "RegisterUser",
   RemoveConnection = "RemoveConnection",
   RemoveMessage = "RemoveMessage",
+  UpdateUserProfileAvatar = "UpdateUserProfileAvatar",
 }
 
 export enum ProcedureOutput {
@@ -52,7 +53,8 @@ export type StoredProcedure =
   | GetUserDataProcedure
   | RegisterUserProcedure
   | RemoveConnectionProcedure
-  | RemoveMessageProcedure;
+  | RemoveMessageProcedure
+  | UpdateAvatarProcedure;
 
 export type MessageBody = {
   id: string;
@@ -61,6 +63,7 @@ export type MessageBody = {
   message: string;
   timestamp: number;
   visible: boolean;
+  avatarKey: string;
 };
 
 type MessagesResponse = {
@@ -140,5 +143,13 @@ type RemoveMessageProcedure = {
   payload: {
     connectionId: string;
     messageId: string;
+  };
+};
+
+type UpdateAvatarProcedure = {
+  type: Procedure.UpdateUserProfileAvatar;
+  payload: {
+    userId: string;
+    avatarKey: string;
   };
 };

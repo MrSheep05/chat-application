@@ -84,6 +84,12 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
       });
       return createOutput({ result, type: ProcedureOutput.GetConnections });
     }
+    case Procedure.UpdateUserProfileAvatar: {
+      const { userId, avatarKey } = procedure.payload;
+
+      const result = await processQuery({ type, inputs: [userId, avatarKey] });
+      return createOutput({ result });
+    }
     default: {
       const result = await processQuery({
         type,
