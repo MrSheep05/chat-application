@@ -4,6 +4,8 @@ import { StyledAvatar } from './styled';
 import { Channel, FileCategory } from 'common/types';
 import { Actions, AppState } from 'renderer/state';
 
+const AVATAR_BUCKET =
+  'https://chat-avatars-0luhsnz0s2.s3.eu-west-2.amazonaws.com';
 interface ISendFileParams {
   buffer: ArrayBuffer;
   url: string;
@@ -79,7 +81,7 @@ const uploadAvatar = async (webSocket: WebSocket) => {
   }
 };
 
-const Avatar = ({ avatarUrl, userId }: AvatarProps) => {
+const Avatar = ({ avatarKey, userId }: AvatarProps) => {
   const {
     state: { webSocket, userData },
   } = useContext(AppState);
@@ -91,6 +93,7 @@ const Avatar = ({ avatarUrl, userId }: AvatarProps) => {
 
     await uploadAvatar(webSocket);
   }, [userId, userData]);
+  const avatarUrl = `${AVATAR_BUCKET}/${avatarKey}`; // TODO:
 
   return (
     <StyledAvatar src={avatarUrl ?? avatarTemplate} onClick={onAvatarClick} />

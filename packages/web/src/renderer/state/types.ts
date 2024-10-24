@@ -4,6 +4,7 @@ export type Message = {
   userId: string;
   id: string;
   timestamp: number;
+  avatarKey: string;
 };
 
 export type State = {
@@ -49,24 +50,12 @@ type SetIsFetchingAction = {
 
 type MessageAction = {
   type: Actions.newMessage;
-  payload: {
-    id: string;
-    user: string;
-    message: string;
-    timestamp: number;
-    userId: string;
-  };
+  payload: Message;
 };
 
 type MessagesAction = {
   type: Actions.messages;
-  payload: {
-    id: string;
-    user: string;
-    message: string;
-    timestamp: number;
-    userId: string;
-  }[];
+  payload: Message[];
 };
 
 type RemoveAction = {

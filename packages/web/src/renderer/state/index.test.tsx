@@ -26,6 +26,7 @@ describe('Given the reducer', () => {
           id: '12345',
           userId: '1',
           user: 'Filip',
+          avatarKey: 'users/default.png',
         },
       ],
     });
@@ -54,9 +55,24 @@ describe('Given the reducer', () => {
         message: 'Welcome in chatroom!',
         userId: '0',
         id: '0',
+        avatarKey: 'users/default.png',
       },
-      { timestamp, user: 'Filip', message: 'Test', id: '1', userId: '1' },
-      { timestamp, user: 'John', message: 'Hello', id: '2', userId: '2' },
+      {
+        timestamp,
+        user: 'Filip',
+        message: 'Test',
+        id: '1',
+        userId: '1',
+        avatarKey: 'users/default.png',
+      },
+      {
+        timestamp,
+        user: 'John',
+        message: 'Hello',
+        id: '2',
+        userId: '2',
+        avatarKey: 'users/default.png',
+      },
     ];
     const result = reducer(
       { ...initialState, messages: exampleMessages },

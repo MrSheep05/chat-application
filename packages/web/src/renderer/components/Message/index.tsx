@@ -13,6 +13,7 @@ import { formatDate } from '../../utils/date';
 import Avatar from '../Avatar';
 
 const Message = ({
+  avatarKey,
   timestamp,
   user,
   userId,
@@ -24,7 +25,7 @@ const Message = ({
       <StyledMoreOptions id="more-options">
         <MessageTooltip userId={userId} index={index} />
       </StyledMoreOptions>
-      <Avatar userId={userId} />
+      <Avatar avatarKey={avatarKey} userId={userId} />
       <StyledContent>
         <StyledHeader>
           <StyledUsername variant="caption">{user}</StyledUsername>
