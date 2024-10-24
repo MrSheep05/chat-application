@@ -4,7 +4,7 @@ import { createResponse } from "@chat-lambdas-libs/response";
 export const middleware =
   <T>(handler: Handler<T>) =>
   async (event: T, context: Context, callback: Callback) => {
-    console.log("Event:", event);
+    console.log("Event:", JSON.stringify(event));
 
     try {
       const response = await handler(event, context, callback);
