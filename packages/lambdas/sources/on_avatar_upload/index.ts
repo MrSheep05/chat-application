@@ -30,7 +30,6 @@ import { updateUserProfileAvatar } from "./database";
 */
 
 export const handler: Handler<S3Event> = middleware(async (event) => {
-  console.info("Event:", JSON.stringify(event));
   const [firstRecord] = event.Records;
 
   if (!firstRecord?.s3?.object) {
