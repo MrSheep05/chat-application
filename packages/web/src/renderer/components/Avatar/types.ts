@@ -1,4 +1,4 @@
 interface AvatarProps {
-  avatarUrl?: string;
+  avatarKey?: string;
   userId: string;
 }

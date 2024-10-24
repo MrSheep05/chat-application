@@ -6,9 +6,10 @@ import MessagesPlaceholder from '../MessagesPlaceholder';
 
 const renderMessages = (messages: MessageType[]): JSX.Element[] => {
   console.log('messages', messages);
-  return messages.map(({ user, message, id, timestamp, userId }) => (
+  return messages.map(({ avatarKey, user, message, id, timestamp, userId }) => (
     <Message
       key={`messageContainer${id}`}
+      avatarKey={avatarKey}
       timestamp={timestamp}
       user={user}
       userId={userId}
