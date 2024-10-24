@@ -158,17 +158,17 @@ locals {
         s3_avatar          = "none"
       }
     }
-    "on_avatar_uploaded" = {
-      allow_api_gateway_execution = "false"
-      environment_variables = {
-        bucketName = var.s3_avatar_bucket_name
-      }
-      permissions = {
-        kms                = "none"
-        manage_connections = "false"
-        rds                = "none"
-        s3_avatar          = "read-write"
-      }
-    }
+    # "on_avatar_uploaded" = {
+    #   allow_api_gateway_execution = "false"
+    #   environment_variables = {
+    #     bucketName = var.s3_avatar_bucket_name
+    #   }
+    #   permissions = {
+    #     kms                = "none"
+    #     manage_connections = "false"
+    #     rds                = "none"
+    #     s3_avatar          = "read-write"
+    #   }
+    # }
   }
 }
