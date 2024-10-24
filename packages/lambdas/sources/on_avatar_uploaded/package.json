@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@chat-lambdas/on_avatar_upload",
+  "name": "@chat-lambdas/on_avatar_uploaded",
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
