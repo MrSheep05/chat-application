@@ -50,7 +50,12 @@ describe("Given the middleware", () => {
         throw Error("EXCEPTION");
       };
 
-      const result = await middleware(myExceptionFunction);
+      const handler = await middleware(myExceptionFunction);
+      const event = {};
+      const context = {} as unknown as Context;
+      const callback = {} as unknown as Callback;
+
+      await handler(event, context, callback);
 
       expect(logSpy).toHaveBeenCalledWith(
         "Handler Threw Exception:",
@@ -63,9 +68,14 @@ describe("Given the middleware", () => {
         throw Error("EXCEPTION");
       };
 
-      const result = await middleware(myExceptionFunction);
+      const handler = await middleware(myExceptionFunction);
+      const event = {};
+      const context = {} as unknown as Context;
+      const callback = {} as unknown as Callback;
 
-      expect(result).toBe({
+      const response = await handler(event, context, callback);
+
+      expect(response).toBe({
         statusCode: 500,
         headers: {
           "Access-Control-Allow-Origin": "*",
