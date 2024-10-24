@@ -75,7 +75,7 @@ describe("Given the middleware", () => {
 
       const response = await handler(event, context, callback);
 
-      expect(response).toBe({
+      expect(response).toStrictEqual({
         statusCode: 500,
         headers: {
           "Access-Control-Allow-Origin": "*",
