@@ -1,8 +1,13 @@
 import { middleware } from "@chat-lambdas-libs/logs";
 import { createResponse } from "@chat-lambdas-libs/response";
 import { Handler, S3Event } from "aws-lambda";
-import { updateUserProfileAvatar } from "./database";
+import {
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 import * as sharp from "sharp";
+import { getObject } from "./s3";
 
 export const handler: Handler<S3Event> = middleware(async (event) => {
   const [firstRecord] = event.Records;
@@ -17,8 +22,8 @@ export const handler: Handler<S3Event> = middleware(async (event) => {
 
   const { key = "" } = firstRecord.s3.object;
   const [folder, uid] = key.split("/");
-
-  if (folder !== "users" || !uid) {
+  const { name: bucket } = firstRecord.s3.bucket;
+  if (folder !== "uploads" || !uid) {
     console.error("Invalid avatar location received:", { folder, key });
     return createResponse({
       statusCode: 400,
@@ -26,6 +31,6 @@ export const handler: Handler<S3Event> = middleware(async (event) => {
     });
   }
 
-  const response = await updateUserProfileAvatar({ uid, avatarKey: key });
-  console.info("Response from query:", JSON.stringify(response));
+  const object = await getObject({ bucket, key });
+  console.info("Read object", { object });
 });

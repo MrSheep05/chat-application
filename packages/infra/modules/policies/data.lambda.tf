@@ -157,7 +157,7 @@ data "aws_iam_policy_document" "lambda_policies" {
     for_each = each.value.permissions.s3_avatar == "read-write" ? [each.key] : []
 
     content {
-      sid = "RoleForPuttingObjectInsideS3"
+      sid = "RoleForGettingAndPuttingObjectInsideS3"
       actions = [
         "s3:PutObject",
         "s3:GetObject"
