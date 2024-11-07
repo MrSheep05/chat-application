@@ -6,8 +6,8 @@ import {
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
-import * as sharp from "sharp";
-import { getObject } from "./s3";
+import sharp from "sharp";
+import { getObject, putObject } from "./s3";
 
 export const handler: Handler<S3Event> = middleware(async (event) => {
   const [firstRecord] = event.Records;
@@ -32,5 +32,20 @@ export const handler: Handler<S3Event> = middleware(async (event) => {
   }
 
   const object = await getObject({ bucket, key });
-  console.info("Read object", { object });
+
+  if (object === null) {
+    throw new Error("Failed to load the file");
+  }
+
+  const sharpObject = await sharp(object).resize(128, 128).toBuffer();
+
+  const uploadSuccess = await putObject({
+    bucket,
+    key: `users/${uid}`,
+    body: sharpObject,
+  });
+
+  if (uploadSuccess === false) {
+    throw new Error("Failed to save the resized file");
+  }
 });
