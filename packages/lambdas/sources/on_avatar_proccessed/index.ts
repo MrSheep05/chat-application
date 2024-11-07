@@ -2,7 +2,6 @@ import { middleware } from "@chat-lambdas-libs/logs";
 import { createResponse } from "@chat-lambdas-libs/response";
 import { Handler, S3Event } from "aws-lambda";
 import { updateUserProfileAvatar } from "./database";
-import * as sharp from "sharp";
 
 export const handler: Handler<S3Event> = middleware(async (event) => {
   const [firstRecord] = event.Records;
