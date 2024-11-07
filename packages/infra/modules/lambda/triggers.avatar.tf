@@ -13,7 +13,7 @@ resource "aws_s3_bucket_notification" "bucket_notification_on_proccessed" {
 }
 
 resource "aws_lambda_permission" "allow_bucket_on_proccessed" {
-  statement_id  = "AllowExecutionFromS3AvatarBucket"
+  statement_id  = "AllowExecutionFromS3AvatarBucketOnProcessed"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_functions["on_avatar_proccessed"].arn
   principal     = "s3.amazonaws.com"
@@ -35,7 +35,7 @@ resource "aws_s3_bucket_notification" "bucket_notification_on_upload" {
 }
 
 resource "aws_lambda_permission" "allow_bucket_on_upload" {
-  statement_id  = "AllowExecutionFromS3AvatarBucket"
+  statement_id  = "AllowExecutionFromS3AvatarBucketOnUpload"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_functions["on_avatar_uploaded"].arn
   principal     = "s3.amazonaws.com"
