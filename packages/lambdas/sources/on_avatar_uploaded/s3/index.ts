@@ -3,7 +3,7 @@ import {
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
-import { Sharp } from "sharp";
+import { GetObjectFn, PutObjectFn } from "./types";
 
 const s3 = new S3Client();
 
@@ -35,14 +35,3 @@ export const putObject: PutObjectFn = async ({ bucket, body, key }) => {
 
   return true;
 };
-
-export type GetObjectFn = ({}: {
-  bucket: string;
-  key: string;
-}) => Promise<Uint8Array | null>;
-
-export type PutObjectFn = ({}: {
-  bucket: string;
-  key: string;
-  body: Buffer;
-}) => Promise<boolean>;
