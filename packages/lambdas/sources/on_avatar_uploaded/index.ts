@@ -1,13 +1,8 @@
 import { middleware } from "@chat-lambdas-libs/logs";
 import { createResponse } from "@chat-lambdas-libs/response";
 import { Handler, S3Event } from "aws-lambda";
-import {
-  GetObjectCommand,
-  PutObjectCommand,
-  S3Client,
-} from "@aws-sdk/client-s3";
-import sharp from "sharp";
 import { getObject, putObject } from "./s3";
+import { Jimp } from "jimp";
 
 export const handler: Handler<S3Event> = middleware(async (event) => {
   const [firstRecord] = event.Records;
@@ -37,12 +32,14 @@ export const handler: Handler<S3Event> = middleware(async (event) => {
     throw new Error("Failed to load the file");
   }
 
-  const sharpObject = await sharp(object).resize(128, 128).toBuffer();
+  const jimpObject = await (await Jimp.fromBuffer(object))
+    .resize({ w: 128, h: 128 })
+    .getBuffer("image/png");
 
   const uploadSuccess = await putObject({
     bucket,
     key: `users/${uid}`,
-    body: sharpObject,
+    body: jimpObject,
   });
 
   if (uploadSuccess === false) {
