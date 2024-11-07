@@ -9,8 +9,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "bundle": "rm -rf dist && esbuild ./sources/* --entry-names=[dir]/[name]/index --bundle --minify --sourcemap --platform=node --target=node20 --external:sharp --outdir=dist",
-    "sharp": "mkdir -p dist/on_avatar_uploaded/node_modules/sharp && cp -r node_modules/sharp dist/on_avatar_uploaded/node_modules",
-    "package": "yarn sharp && cd dist && for f in * ; do ([ -d \"$f\" ] && cd $f && zip -r $f.zip *) ; done"
+    "package": "cd dist && for f in * ; do ([ -d \"$f\" ] && cd $f && zip -r $f.zip *) ; done"
   },
   "dependencies": {
     "esbuild": "^0.20.2",
