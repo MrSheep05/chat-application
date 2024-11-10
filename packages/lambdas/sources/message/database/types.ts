@@ -1,4 +1,4 @@
-import { MessageBody } from '@chat-lambdas-libs/database/types';
+import { MessageBody } from "@chat-lambdas-libs/database/types";
 
 interface IAddMessageParams {
   userId: string;

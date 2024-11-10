@@ -1,5 +1,5 @@
-import { KMSClient } from '@aws-sdk/client-kms';
-import { webcrypto } from 'crypto';
+import { KMSClient } from "@aws-sdk/client-kms";
+import { webcrypto } from "crypto";
 
 export interface PubKeyCache {
   [key: string]: webcrypto.CryptoKey;
@@ -15,12 +15,12 @@ export type SignFn = (
   options?: {
     expiresIn?: number;
     expiresAt?: Date;
-  }
+  },
 ) => Promise<string>;
 
 export type VerifyFn = (
   token: string,
-  keyId: string
+  keyId: string,
 ) => Promise<{
   isValid: boolean;
   error?: TokenError;
@@ -30,8 +30,8 @@ export type VerifyFn = (
 }>;
 
 export enum TokenError {
-  InvalidPayload = 'Invalid payload',
-  InvalidSignature = 'Invalid signature',
-  TokenExpired = 'Token expired',
-  InvalidToken = 'Invalid token',
+  InvalidPayload = "Invalid payload",
+  InvalidSignature = "Invalid signature",
+  TokenExpired = "Token expired",
+  InvalidToken = "Invalid token",
 }

@@ -1,5 +1,5 @@
-import { ProcedureCallPacket } from 'mysql2';
-import { connect } from './rds';
+import { ProcedureCallPacket } from "mysql2";
+import { connect } from "./rds";
 import {
   type QueryProcedureFn,
   type PARAMETER_TYPES,
@@ -7,7 +7,7 @@ import {
   Procedure,
   ProcedureOutput,
   ProcedureResponse,
-} from './types';
+} from "./types";
 
 export const queryProcedure: QueryProcedureFn = async (procedure) => {
   const { type } = procedure;
@@ -65,7 +65,10 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
         type,
         inputs: [connectionId, messageId],
       });
-      return createOutput({ result, type: ProcedureOutput.RemoveMessage });
+      return createOutput({
+        result,
+        type: ProcedureOutput.RemoveMessage,
+      });
     }
     case Procedure.AddMessage: {
       const { userId, content } = procedure.payload;
@@ -82,12 +85,18 @@ export const queryProcedure: QueryProcedureFn = async (procedure) => {
       const result = await processQuery({
         type,
       });
-      return createOutput({ result, type: ProcedureOutput.GetConnections });
+      return createOutput({
+        result,
+        type: ProcedureOutput.GetConnections,
+      });
     }
     case Procedure.UpdateUserProfileAvatar: {
       const { userId, avatarKey } = procedure.payload;
 
-      const result = await processQuery({ type, inputs: [userId, avatarKey] });
+      const result = await processQuery({
+        type,
+        inputs: [userId, avatarKey],
+      });
       return createOutput({ result });
     }
     default: {
@@ -108,16 +117,16 @@ const createOutput = ({
 }): ProcedureResponse => {
   const { results, fields } = result;
   const payload =
-    typeof results[Symbol.iterator] === 'function' ? results[0] : results;
+    typeof results[Symbol.iterator] === "function" ? results[0] : results;
   return type
     ? {
-      result: { type, payload },
-      fields,
-    }
+        result: { type, payload },
+        fields,
+      }
     : {
-      result: { type: ProcedureOutput.Other, payload },
-      fields,
-    };
+        result: { type: ProcedureOutput.Other, payload },
+        fields,
+      };
 };
 
 const processQuery: ProcessQueryFn = async ({ type, inputs = [] }) => {
@@ -125,19 +134,19 @@ const processQuery: ProcessQueryFn = async ({ type, inputs = [] }) => {
   const [inputSQL, queryInputs] = inputs.reduce<[string[], any[]]>(
     ([inputSQL, queryInputs], val) => {
       return val === null
-        ? [[...inputSQL, 'NULL'], queryInputs]
+        ? [[...inputSQL, "NULL"], queryInputs]
         : [
-          [...inputSQL, '?'],
-          [...queryInputs, val],
-        ];
+            [...inputSQL, "?"],
+            [...queryInputs, val],
+          ];
     },
-    [[], []]
+    [[], []],
   );
   // const inputSQL = Array.from({ length: inputs.length }, () => '?').join(',');
   // const queryInputsTwo = [...inputs].map((value) =>
   //   value === null ? 'NULL' : value
   // );
-  const query = `CALL ${type}(${inputSQL.join(',')});`;
+  const query = `CALL ${type}(${inputSQL.join(",")});`;
   console.info(`QUERY INPUT`, queryInputs);
   console.info(`QUERY`, query);
   return new Promise((resolve, reject) => {

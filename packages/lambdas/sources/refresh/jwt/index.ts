@@ -1,18 +1,18 @@
-import { verify } from '@chat-lambdas-libs/kms';
+import { verify } from "@chat-lambdas-libs/kms";
 import {
   createJWT,
   doSubjectsMatch,
   getTokenPayload,
-} from '@chat-lambdas-libs/jwt';
-import { TokenError } from '@chat-lambdas-libs/kms';
-import type { CreateKeyPairFn, VerifyTokensFn } from './types';
+} from "@chat-lambdas-libs/jwt";
+import { TokenError } from "@chat-lambdas-libs/kms";
+import type { CreateKeyPairFn, VerifyTokensFn } from "./types";
 
 const { kmsJwtAliasName, kmsRefreshJwtAliasName } = process.env;
 const ONE_WEEK = 7 * 24 * 60 * 60;
 
 export const verifyTokens: VerifyTokensFn = async (token, refreshToken) => {
   if (!kmsJwtAliasName || !kmsRefreshJwtAliasName) {
-    throw new Error('Missing environment variables for kms aliases');
+    throw new Error("Missing environment variables for kms aliases");
   }
 
   const { isValid, error } = await verify(token, kmsJwtAliasName);
@@ -23,21 +23,21 @@ export const verifyTokens: VerifyTokensFn = async (token, refreshToken) => {
 
   const { isValid: isValidRefresh } = await verify(
     refreshToken,
-    kmsRefreshJwtAliasName
+    kmsRefreshJwtAliasName,
   );
 
   if (!isValidRefresh) {
-    throw new Error('Refresh token invalid');
+    throw new Error("Refresh token invalid");
   }
 
   if (!doSubjectsMatch(token, refreshToken)) {
-    throw new Error('Subjects do not match');
+    throw new Error("Subjects do not match");
   }
 };
 
 export const createKeyPair: CreateKeyPairFn = async (originalToken) => {
   if (!kmsJwtAliasName || !kmsRefreshJwtAliasName) {
-    throw new Error('Missing environment variables for kms aliases');
+    throw new Error("Missing environment variables for kms aliases");
   }
 
   const { sub: userId, username } = getTokenPayload(originalToken);

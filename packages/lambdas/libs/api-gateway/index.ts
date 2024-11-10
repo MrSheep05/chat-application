@@ -1,21 +1,21 @@
-import { APIGatewayProxyEvent } from 'aws-lambda';
+import { APIGatewayProxyEvent } from "aws-lambda";
 import {
   ApiGatewayManagementApiClient,
   PostToConnectionCommand,
   DeleteConnectionCommand,
-} from '@aws-sdk/client-apigatewaymanagementapi';
+} from "@aws-sdk/client-apigatewaymanagementapi";
 import {
   DeleteConnectionFn,
   PostToConnectionFn,
   PostToConnectionsFn,
-} from './types';
+} from "./types";
 
 export const createAPIGatewayClient = (event: APIGatewayProxyEvent) => {
   return new ApiGatewayManagementApiClient({
     endpoint:
-      'https://' +
+      "https://" +
       event.requestContext.domainName +
-      '/' +
+      "/" +
       event.requestContext.stage,
   });
 };
@@ -34,9 +34,9 @@ export const postToConnection: PostToConnectionFn = async ({
     await apiGatewayClient.send(command);
   } catch (error) {
     console.error(
-      'Unable to send message to a connection',
+      "Unable to send message to a connection",
       connectionId,
-      error
+      error,
     );
     await deleteConnection({ apiGatewayClient, connectionId });
   }
@@ -50,13 +50,13 @@ export const postToConnections: PostToConnectionsFn = async ({
   const apiGatewayClient = createAPIGatewayClient(event);
   await Promise.all(
     connections.map(async (connectionId: string) => {
-      console.log('Sending message to connection ', connectionId);
+      console.log("Sending message to connection ", connectionId);
       await postToConnection({
         apiGatewayClient,
         connectionId,
         message: JSON.stringify(message),
       });
-    })
+    }),
   );
 };
 
@@ -71,6 +71,6 @@ const deleteConnection: DeleteConnectionFn = async ({
 
     await apiGatewayClient.send(command);
   } catch (error) {
-    console.warn('Unable to disconnect the broken connection', error);
+    console.warn("Unable to disconnect the broken connection", error);
   }
 };

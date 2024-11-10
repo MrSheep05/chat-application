@@ -1,6 +1,6 @@
-import { queryProcedure } from '@chat-lambdas-libs/database';
-import { Procedure, ProcedureOutput } from '@chat-lambdas-libs/database/types';
-import { GetMessagesFn } from './types';
+import { queryProcedure } from "@chat-lambdas-libs/database";
+import { Procedure, ProcedureOutput } from "@chat-lambdas-libs/database/types";
+import { GetMessagesFn } from "./types";
 
 export const getMessages: GetMessagesFn = async (oldestMessageId) => {
   const { result } = await queryProcedure({
@@ -12,6 +12,6 @@ export const getMessages: GetMessagesFn = async (oldestMessageId) => {
     const { payload } = result;
     return payload.reverse();
   }
-  console.error('Unexpected response from database:', result);
-  throw new Error('Incorrect response from the Database');
+  console.error("Unexpected response from database:", result);
+  throw new Error("Incorrect response from the Database");
 };

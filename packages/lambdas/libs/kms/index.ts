@@ -3,8 +3,8 @@ import {
   KMSClient,
   GetPublicKeyCommand,
   SignCommand,
-} from '@aws-sdk/client-kms';
-import { webcrypto } from 'crypto';
+} from "@aws-sdk/client-kms";
+import { webcrypto } from "crypto";
 import {
   TokenError,
   type GetClientFn,
@@ -12,25 +12,25 @@ import {
   type PubKeyCache,
   type SignFn,
   type VerifyFn,
-} from './types';
+} from "./types";
 
-export { TokenError } from './types';
+export { TokenError } from "./types";
 
 const { subtle } = webcrypto;
 
-const SUBJECT_PUBLIC_KEY_INFO_FORMAT = 'spki';
-const KEY_USAGE_VERIFY = 'verify';
+const SUBJECT_PUBLIC_KEY_INFO_FORMAT = "spki";
+const KEY_USAGE_VERIFY = "verify";
 const EXTRACTABLE = true;
 const IMPORT_ALGORITHM = {
-  name: 'RSA-PSS',
-  hash: { name: 'SHA-256' },
+  name: "RSA-PSS",
+  hash: { name: "SHA-256" },
 };
-const SIGNING_ALGORITHM_NAME = 'RSASSA_PSS_SHA_256';
+const SIGNING_ALGORITHM_NAME = "RSASSA_PSS_SHA_256";
 const SIGNING_ALGORITHM_DETAILS = {
-  name: 'RSA-PSS',
+  name: "RSA-PSS",
   saltLength: 32,
 };
-const JWT_TOKEN_TYPE = 'JWT';
+const JWT_TOKEN_TYPE = "JWT";
 
 let client: KMSClient | undefined;
 
@@ -51,7 +51,7 @@ const getPublicKey: GetPublicKeyFn = async (keyId) => {
   const result = await getClient().send(
     new GetPublicKeyCommand({
       KeyId: keyId,
-    })
+    }),
   );
 
   if (!result.PublicKey) {
@@ -63,7 +63,7 @@ const getPublicKey: GetPublicKeyFn = async (keyId) => {
     Buffer.from(result.PublicKey),
     IMPORT_ALGORITHM,
     EXTRACTABLE,
-    [KEY_USAGE_VERIFY]
+    [KEY_USAGE_VERIFY],
   );
 
   if (!key) {
@@ -98,12 +98,12 @@ export const sign: SignFn = async (payload, keyId, options) => {
       }),
     });
 
-    const headerEncoded = Buffer.from(headerString).toString('base64url');
-    const payloadEncoded = Buffer.from(payloadString).toString('base64url');
+    const headerEncoded = Buffer.from(headerString).toString("base64url");
+    const payloadEncoded = Buffer.from(payloadString).toString("base64url");
     const messageBuffer = Buffer.from(`${headerEncoded}.${payloadEncoded}`);
 
     if (messageBuffer.length > 4096) {
-      throw new Error('Message must be less than 4096 bytes');
+      throw new Error("Message must be less than 4096 bytes");
     }
 
     const result = await getClient().send(
@@ -111,27 +111,27 @@ export const sign: SignFn = async (payload, keyId, options) => {
         KeyId: keyId,
         Message: messageBuffer,
         SigningAlgorithm: SIGNING_ALGORITHM_NAME,
-      })
+      }),
     );
 
     if (!result?.Signature) {
-      throw new Error('Result missing signature');
+      throw new Error("Result missing signature");
     }
 
     const signatureEncoded = Buffer.from(result.Signature).toString(
-      'base64url'
+      "base64url",
     );
 
     return `${headerEncoded}.${payloadEncoded}.${signatureEncoded}`;
   } catch (error) {
-    console.error('[KMS Utils] error signing', error);
+    console.error("[KMS Utils] error signing", error);
 
     throw new Error(`Failed to sign the payload, ${error}`);
   }
 };
 
 export const verify: VerifyFn = async (token, keyId) => {
-  const parts = token.split('.');
+  const parts = token.split(".");
   const pubKeyPromise = getPublicKey(keyId);
 
   if (parts.length !== 3) {
@@ -142,14 +142,14 @@ export const verify: VerifyFn = async (token, keyId) => {
   }
 
   const [headerString, payloadString, signatureBase64] = parts;
-  const signatureString = Buffer.from(signatureBase64, 'base64url');
+  const signatureString = Buffer.from(signatureBase64, "base64url");
   const message = `${headerString}.${payloadString}`;
 
   const result = await subtle.verify(
     SIGNING_ALGORITHM_DETAILS,
     await pubKeyPromise,
     signatureString,
-    Buffer.from(message)
+    Buffer.from(message),
   );
 
   if (!result) {
@@ -161,7 +161,7 @@ export const verify: VerifyFn = async (token, keyId) => {
 
   try {
     const payload = JSON.parse(
-      Buffer.from(payloadString, 'base64url').toString()
+      Buffer.from(payloadString, "base64url").toString(),
     );
 
     if (payload.exp) {
@@ -181,7 +181,7 @@ export const verify: VerifyFn = async (token, keyId) => {
       payload,
     };
   } catch (error) {
-    console.error('[KMS Utils] error verifying', error);
+    console.error("[KMS Utils] error verifying", error);
 
     return {
       isValid: false,

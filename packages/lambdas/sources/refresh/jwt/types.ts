@@ -1,7 +1,7 @@
 export type VerifyTokensFn = (
   token: string,
-  refreshToken: string
+  refreshToken: string,
 ) => Promise<void>;
 export type CreateKeyPairFn = (
-  token: string
+  token: string,
 ) => Promise<{ token: string; refreshToken: string }>;

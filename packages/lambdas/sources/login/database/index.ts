@@ -1,9 +1,9 @@
-import { queryProcedure } from '@chat-lambdas-libs/database';
-import { Procedure, ProcedureOutput } from '@chat-lambdas-libs/database/types';
-import { GetUserDataFn } from './types';
+import { queryProcedure } from "@chat-lambdas-libs/database";
+import { Procedure, ProcedureOutput } from "@chat-lambdas-libs/database/types";
+import { GetUserDataFn } from "./types";
 
 export const getUserData: GetUserDataFn = async (username) => {
-  const userData = 'userData';
+  const userData = "userData";
   const { result } = await queryProcedure({
     type: Procedure.GetUserData,
     payload: { username },
@@ -15,8 +15,8 @@ export const getUserData: GetUserDataFn = async (username) => {
       : [undefined as any];
 
   if (!id || !password) {
-    console.error('Unexpected response from database:', id, password);
-    throw new Error('Incorrect response from the Database');
+    console.error("Unexpected response from database:", id, password);
+    throw new Error("Incorrect response from the Database");
   }
 
   return { id, password };

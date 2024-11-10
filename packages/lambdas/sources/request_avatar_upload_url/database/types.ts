@@ -4,5 +4,5 @@ interface GetUserDataResponse {
 }
 
 export type GetUserDataFn = (
-  connectionId: string
+  connectionId: string,
 ) => Promise<GetUserDataResponse>;
