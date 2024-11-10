@@ -1,4 +1,4 @@
-import { DarwinMenuItemConstructorOptions } from "main/menu/types";
+import { DarwinMenuItemConstructorOptions } from "../../../../types";
 
 export const subMenuWindow: DarwinMenuItemConstructorOptions = {
     label: 'Window',

@@ -1,5 +1,5 @@
 import { app } from "electron";
-import { DarwinMenuItemConstructorOptions } from "main/menu/types";
+import { DarwinMenuItemConstructorOptions } from "../../../../types";
 
 export const subMenuAbout: DarwinMenuItemConstructorOptions = {
     label: 'Electron',

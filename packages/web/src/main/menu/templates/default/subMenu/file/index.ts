@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { DarwinMenuItemConstructorOptions } from "main/menu/types";
+import { DarwinMenuItemConstructorOptions } from "../../../../types";
 
 export const getFileSubMenu = (
     mainWindow: BrowserWindow

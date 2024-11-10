@@ -25,4 +25,6 @@ export const FileCategories: FileCategories = {
 export enum Channel {
   Message = 'message',
   FileDialog = 'file',
+  ElectronStoreGet = 'electron-store-get',
+  ElectronStoreSet = 'electron-store-set',
 }
