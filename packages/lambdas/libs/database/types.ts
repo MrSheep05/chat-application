@@ -1,6 +1,6 @@
 export enum PARAMETER_TYPES {
-  IN = "in",
-  OUT = "out",
+  IN = 'in',
+  OUT = 'out',
 }
 
 export type QueryProcedureFn = (
@@ -16,24 +16,24 @@ export type ProcessQueryFn = ({
 }) => Promise<{ results: any; fields: any }>;
 export interface ProcedureResponse {
   result:
-    | GetUserDataResponse
-    | RemoveMessageResponse
-    | GetConnectionsResponse
-    | MessagesResponse
-    | { type: ProcedureOutput.Other; payload: any };
+  | GetUserDataResponse
+  | RemoveMessageResponse
+  | GetConnectionsResponse
+  | MessagesResponse
+  | { type: ProcedureOutput.Other; payload: any };
   fields: any[];
 }
 
 export enum Procedure {
-  AddConnection = "AddConnection",
-  AddMessage = "AddMessage",
-  GetConnections = "GetConnections",
-  GetMessages = "GetMessages",
-  GetUserData = "GetUserData",
-  RegisterUser = "RegisterUser",
-  RemoveConnection = "RemoveConnection",
-  RemoveMessage = "RemoveMessage",
-  UpdateUserProfileAvatar = "UpdateUserProfileAvatar",
+  AddConnection = 'AddConnection',
+  AddMessage = 'AddMessage',
+  GetConnections = 'GetConnections',
+  GetMessages = 'GetMessages',
+  GetUserData = 'GetUserData',
+  RegisterUser = 'RegisterUser',
+  RemoveConnection = 'RemoveConnection',
+  RemoveMessage = 'RemoveMessage',
+  UpdateUserProfileAvatar = 'UpdateUserProfileAvatar',
 }
 
 export enum ProcedureOutput {

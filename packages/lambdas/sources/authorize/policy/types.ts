@@ -1,6 +1,6 @@
 export enum Effect {
-  Deny = "Deny",
-  Allow = "Allow",
+  Deny = 'Deny',
+  Allow = 'Allow',
 }
 
 interface Statement {

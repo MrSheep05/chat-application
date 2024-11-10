@@ -1,4 +1,4 @@
-import { GetDataFromEventFn } from "./types";
+import { GetDataFromEventFn } from './types';
 
 export const getDataFromEvent: GetDataFromEventFn = (event) => {
   const { connectionId } = event.requestContext;

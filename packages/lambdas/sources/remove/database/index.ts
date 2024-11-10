@@ -1,6 +1,6 @@
-import { queryProcedure } from "@chat-lambdas-libs/database";
-import { RemoveMessageFn } from "./types";
-import { Procedure, ProcedureOutput } from "@chat-lambdas-libs/database/types";
+import { queryProcedure } from '@chat-lambdas-libs/database';
+import { RemoveMessageFn } from './types';
+import { Procedure, ProcedureOutput } from '@chat-lambdas-libs/database/types';
 
 export const removeMessage: RemoveMessageFn = async ({
   connectionId,
@@ -17,5 +17,5 @@ export const removeMessage: RemoveMessageFn = async ({
   ) {
     return result.payload[0].updateCount;
   }
-  throw Error("Unexpected output type from procedure!");
+  throw Error('Unexpected output type from procedure!');
 };

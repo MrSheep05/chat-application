@@ -1,9 +1,9 @@
-import { GetDataFromEventFn, getTokenSubjectFn } from "./types";
+import { GetDataFromEventFn, getTokenSubjectFn } from './types';
 
 export const getTokenSubject: getTokenSubjectFn = (token) => {
-  const [, payload] = token.split(".");
+  const [, payload] = token.split('.');
   if (payload) {
-    return JSON.parse(Buffer.from(payload, "base64url").toString()).sub;
+    return JSON.parse(Buffer.from(payload, 'base64url').toString()).sub;
   }
 };
 

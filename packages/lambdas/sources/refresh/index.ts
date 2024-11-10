@@ -1,9 +1,9 @@
-import type { APIGatewayProxyEvent, Handler } from "aws-lambda";
-import { createResponse } from "@chat-lambdas-libs/response";
+import type { APIGatewayProxyEvent, Handler } from 'aws-lambda';
+import { createResponse } from '@chat-lambdas-libs/response';
 
-import { GetDataFromEventFn } from "./types";
-import { createKeyPair, verifyTokens } from "./jwt";
-import { middleware } from "@chat-lambdas-libs/logs";
+import { GetDataFromEventFn } from './types';
+import { createKeyPair, verifyTokens } from './jwt';
+import { middleware } from '@chat-lambdas-libs/logs';
 
 const UNAUTHORISED_RESPONSE = createResponse({ statusCode: 401 });
 const { kmsJwtAliasName, kmsRefreshJwtAliasName } = process.env;
@@ -14,7 +14,7 @@ const getDataFromEvent: GetDataFromEventFn = (event) => {
       return JSON.parse(event.body);
     }
   } catch (error) {
-    console.error("Failed to parse the tokens:", error);
+    console.error('Failed to parse the tokens:', error);
   }
 
   return {};
@@ -35,7 +35,7 @@ export const handler: Handler<APIGatewayProxyEvent> = middleware(
     try {
       await verifyTokens(token, refreshToken);
     } catch (error) {
-      console.error("Verify Tokens Error:", error);
+      console.error('Verify Tokens Error:', error);
       return UNAUTHORISED_RESPONSE;
     }
 

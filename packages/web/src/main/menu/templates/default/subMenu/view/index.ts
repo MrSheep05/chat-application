@@ -1,13 +1,11 @@
-import { BrowserWindow } from "electron";
-import { DarwinMenuItemConstructorOptions } from "main/menu/types";
+import { BrowserWindow } from 'electron';
+import { DarwinMenuItemConstructorOptions } from '../../../../types';
+import { isDebug } from '../../../../../utils/environmentVariables';
 
-export const getSubMenuView = (
-    mainWindow: BrowserWindow,
-    enableDevelopmentOptions: boolean
-): DarwinMenuItemConstructorOptions => ({
+export const getSubMenuView = (mainWindow: BrowserWindow): DarwinMenuItemConstructorOptions => ({
     label: '&View',
     submenu: [
-        enableDevelopmentOptions ? {
+        isDebug ? {
             label: '&Reload',
             accelerator: 'Ctrl+R',
             click: () => {
@@ -21,7 +19,7 @@ export const getSubMenuView = (
                 mainWindow.setFullScreen(!mainWindow.isFullScreen());
             },
         },
-        enableDevelopmentOptions ? {
+        isDebug ? {
             label: 'Toggle &Developer Tools',
             accelerator: 'Alt+Ctrl+I',
             click: () => {

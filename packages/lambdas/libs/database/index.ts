@@ -1,5 +1,5 @@
-import { queryProcedure } from "./procedure";
-import { Procedure, ProcedureOutput } from "./types";
+import { queryProcedure } from './procedure';
+import { Procedure, ProcedureOutput } from './types';
 
 const getConnections: GetConnectionsFn = async (connectionId) => {
   const { result } = await queryProcedure({ type: Procedure.GetConnections });
@@ -11,7 +11,7 @@ const getConnections: GetConnectionsFn = async (connectionId) => {
       connections: payload.map(({ id }) => id),
     };
   }
-  throw Error("Unexpected output type from procedure!");
+  throw Error('Unexpected output type from procedure!');
 };
 
 type GetConnectionsFn = (

@@ -1,5 +1,5 @@
-import { generateAllow, generateDeny } from "../policy";
-import { GetMethodArnFn, RequestHandlerFn } from "./types";
+import { generateAllow, generateDeny } from '../policy';
+import { GetMethodArnFn, RequestHandlerFn } from './types';
 
 const getMethodArn: GetMethodArnFn = (event) => {
   const { methodArn } = event;

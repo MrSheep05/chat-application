@@ -1,4 +1,4 @@
-import { APIGatewayRequestAuthorizerEvent, Callback } from "aws-lambda";
+import { APIGatewayRequestAuthorizerEvent, Callback } from 'aws-lambda';
 
 export type RequestHandlerFn = (
   event: APIGatewayRequestAuthorizerEvent,

@@ -1,8 +1,8 @@
-import { queryProcedure } from "@chat-lambdas-libs/database";
+import { queryProcedure } from '@chat-lambdas-libs/database';
 import {
   Procedure,
   ProcedureResponse,
-} from "@chat-lambdas-libs/database/types";
+} from '@chat-lambdas-libs/database/types';
 
 export const updateUserProfileAvatar: UpdateUserProfileAvatarFn = async ({
   uid,
