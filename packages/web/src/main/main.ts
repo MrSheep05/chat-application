@@ -17,7 +17,7 @@ import installExtension, {
   REDUX_DEVTOOLS,
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
-import MenuBuilder from './menu';
+import { buildMenu } from './menu';
 import { resolveHtmlPath } from './util';
 import showNotification from './utils/notification';
 
@@ -110,8 +110,7 @@ const createWindow = async () => {
     app.setBadgeCount(0);
   });
 
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
+  buildMenu(mainWindow);
 
   // Open urls in the user's browser
   mainWindow.webContents.setWindowOpenHandler((edata) => {
