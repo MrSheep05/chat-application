@@ -1,12 +1,12 @@
 {
-  "private": true,
-  "name": "@chat-lambdas/disconnect",
-  "version": "1.0.0",
-  "license": "MIT",
-  "dependencies": {
-    "@chat-lambdas-libs/database": "^1.0.0"
-  },
-  "devDependencies": {
-    "@types/aws-lambda": "8.10.136"
-  }
+    "private": true,
+    "name": "@chat-lambdas/disconnect",
+    "version": "1.0.0",
+    "license": "MIT",
+    "dependencies": {
+        "@chat-lambdas-libs/database": "^1.0.0"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "8.10.136"
+    }
 }

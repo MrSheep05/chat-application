@@ -1,7 +1,7 @@
 export type RemoveMessageFn = ({
-  connectionId,
-  messageId,
+    connectionId,
+    messageId,
 }: {
-  connectionId: string;
-  messageId: string;
+    connectionId: string;
+    messageId: string;
 }) => Promise<number>;

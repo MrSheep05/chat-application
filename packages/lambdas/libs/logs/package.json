@@ -1,13 +1,13 @@
 {
-  "name": "@chat-lambdas-libs/logs",
-  "version": "1.0.0",
-  "license": "MIT",
-  "main": "index.js",
-  "private": true,
-  "dependencies": {
-    "@chat-lambdas-libs/response": "1.0.0"
-  },
-  "devDependencies": {
-    "@types/aws-lambda": "8.10.136"
-  }
+    "name": "@chat-lambdas-libs/logs",
+    "version": "1.0.0",
+    "license": "MIT",
+    "main": "index.js",
+    "private": true,
+    "dependencies": {
+        "@chat-lambdas-libs/response": "1.0.0"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "8.10.136"
+    }
 }

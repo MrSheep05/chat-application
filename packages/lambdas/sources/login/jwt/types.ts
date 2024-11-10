@@ -1,14 +1,14 @@
 interface IGenerateJWTPairParams {
-  userId: string;
-  username: string;
+    userId: string;
+    username: string;
 }
 
 interface IGenerateJWTPairResponse {
-  token: string;
-  refreshToken: string;
+    token: string;
+    refreshToken: string;
 }
 
 export type GenerateJWTPairFn = ({
-  userId,
-  username,
+    userId,
+    username,
 }: IGenerateJWTPairParams) => Promise<IGenerateJWTPairResponse>;

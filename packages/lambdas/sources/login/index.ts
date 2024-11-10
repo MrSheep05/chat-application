@@ -8,39 +8,40 @@ import { getUserData } from './database';
 import { middleware } from '@chat-lambdas-libs/logs';
 
 export const handler: Handler<APIGatewayProxyEvent> = middleware(
-  async (event): Promise<HandlerResponse> => {
-    if (typeof event?.body !== 'string') {
-      return createResponse({ statusCode: 400 });
-    }
+    async (event): Promise<HandlerResponse> => {
+        if (typeof event?.body !== 'string') {
+            return createResponse({ statusCode: 400 });
+        }
 
-    const { username, password } = JSON.parse(event.body);
+        const { username, password } = JSON.parse(event.body);
 
-    if (typeof username !== 'string' || typeof password !== 'string') {
-      return createResponse({ statusCode: 400 });
-    }
+        if (typeof username !== 'string' || typeof password !== 'string') {
+            return createResponse({ statusCode: 400 });
+        }
 
-    try {
-      const { password: passwordHash, id: userId } = await getUserData(
-        username
-      );
+        try {
+            const { password: passwordHash, id: userId } =
+                await getUserData(username);
 
-      if (hash(password) !== passwordHash) {
-        console.log('Invalid credentials. Returning 400 to the client.');
-        return createResponse({
-          statusCode: 400,
-          message: 'Invalid Credentials',
-        });
-      }
+            if (hash(password) !== passwordHash) {
+                console.log(
+                    'Invalid credentials. Returning 400 to the client.',
+                );
+                return createResponse({
+                    statusCode: 400,
+                    message: 'Invalid Credentials',
+                });
+            }
 
-      const { token, refreshToken } = await generateJWTPair({
-        userId,
-        username,
-      });
+            const { token, refreshToken } = await generateJWTPair({
+                userId,
+                username,
+            });
 
-      return createResponse({ message: { token, refreshToken } });
-    } catch (error) {
-      console.error('Encountered an error:', error);
-      return createResponse({ statusCode: 500 });
-    }
-  }
+            return createResponse({ message: { token, refreshToken } });
+        } catch (error) {
+            console.error('Encountered an error:', error);
+            return createResponse({ statusCode: 500 });
+        }
+    },
 );

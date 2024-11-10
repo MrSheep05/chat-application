@@ -1,27 +1,27 @@
 export enum Effect {
-  Deny = 'Deny',
-  Allow = 'Allow',
+    Deny = 'Deny',
+    Allow = 'Allow',
 }
 
 interface Statement {
-  Action: string;
-  Effect: Effect;
-  Resource: string;
+    Action: string;
+    Effect: Effect;
+    Resource: string;
 }
 
 interface IPolicyDocument {
-  Version: string;
-  Statement: Statement[];
+    Version: string;
+    Statement: Statement[];
 }
 
 export interface IGeneratedPolicy {
-  principalId: string;
-  policyDocument: IPolicyDocument;
+    principalId: string;
+    policyDocument: IPolicyDocument;
 }
 
 export type GeneratePolicyFn = (
-  effect: Effect,
-  resource: string
+    effect: Effect,
+    resource: string,
 ) => IGeneratedPolicy;
 
 export type GenerateAllowFn = (resource: string) => IGeneratedPolicy;

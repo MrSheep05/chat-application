@@ -1,13 +1,13 @@
 {
-  "name": "@chat-lambdas-libs/api-gateway",
-  "version": "1.0.0",
-  "license": "MIT",
-  "main": "index.js",
-  "private": true,
-  "dependencies": {
-    "@aws-sdk/client-apigatewaymanagementapi": "3.484.0"
-  },
-  "devDependencies": {
-    "@types/aws-lambda": "8.10.136"
-  }
+    "name": "@chat-lambdas-libs/api-gateway",
+    "version": "1.0.0",
+    "license": "MIT",
+    "main": "index.js",
+    "private": true,
+    "dependencies": {
+        "@aws-sdk/client-apigatewaymanagementapi": "3.484.0"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "8.10.136"
+    }
 }

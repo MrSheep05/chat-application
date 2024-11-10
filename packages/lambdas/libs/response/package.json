@@ -1,10 +1,10 @@
 {
-  "name": "@chat-lambdas-libs/response",
-  "version": "1.0.0",
-  "license": "MIT",
-  "main": "index.js",
-  "private": true,
-  "devDependencies": {
-    "@types/aws-lambda": "8.10.136"
-  }
+    "name": "@chat-lambdas-libs/response",
+    "version": "1.0.0",
+    "license": "MIT",
+    "main": "index.js",
+    "private": true,
+    "devDependencies": {
+        "@types/aws-lambda": "8.10.136"
+    }
 }

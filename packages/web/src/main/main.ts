@@ -3,7 +3,11 @@ import SourceMapSupport from 'source-map-support';
 import ElectronDebug from 'electron-debug';
 
 import { createWindow, setupMainWindow } from './window';
-import { isDarwinPlatform, isDebug, isProduction } from './utils/environmentVariables';
+import {
+  isDarwinPlatform,
+  isDebug,
+  isProduction,
+} from './utils/environmentVariables';
 import { listenToIPCEvents } from './ipc';
 import { buildMenu } from './menu';
 import { enableAutoUpdates } from './autoUpdater';
@@ -49,7 +53,7 @@ app
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) {
         mainWindow = await createMainWindow();
-      };
+      }
     });
   })
   .catch(console.log);
