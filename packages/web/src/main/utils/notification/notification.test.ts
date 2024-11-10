@@ -25,7 +25,10 @@ describe('Given showNotification', () => {
     });
 
     it('should create a new Notification', () => {
-      expect(Notification).toHaveBeenCalledWith({ body: 'test', title: 'Filip' });
+      expect(Notification).toHaveBeenCalledWith({
+        body: 'test',
+        title: 'Filip',
+      });
     });
 
     it('should show the Notification', () => {

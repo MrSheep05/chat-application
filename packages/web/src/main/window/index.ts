@@ -8,23 +8,23 @@ import { setWindowOpenHandler } from './webContents';
 import { getAssetPath, getPreloadScriptPath } from './assets';
 
 export const createWindow = async (): Promise<BrowserWindow> => {
-    if (isDebug) {
-        await installExtensions();
-    }
+  if (isDebug) {
+    await installExtensions();
+  }
 
-    return new BrowserWindow({
-        show: false,
-        width: 1024,
-        height: 728,
-        icon: getAssetPath('icon.png'),
-        webPreferences: {
-            preload: getPreloadScriptPath()
-        }
-    });
+  return new BrowserWindow({
+    show: false,
+    width: 1024,
+    height: 728,
+    icon: getAssetPath('icon.png'),
+    webPreferences: {
+      preload: getPreloadScriptPath(),
+    },
+  });
 };
 
 export const setupMainWindow = (mainWindow: BrowserWindow) => {
-    listenToWindowEvents(mainWindow);
-    loadHTMLDocument(mainWindow);
-    setWindowOpenHandler(mainWindow);
+  listenToWindowEvents(mainWindow);
+  loadHTMLDocument(mainWindow);
+  setWindowOpenHandler(mainWindow);
 };
