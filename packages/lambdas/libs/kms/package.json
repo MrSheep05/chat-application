@@ -1,14 +1,14 @@
 {
-  "name": "@chat-lambdas-libs/kms",
-  "version": "1.0.0",
-  "license": "MIT",
-  "main": "index.js",
-  "private": true,
-  "dependencies": {
-    "@aws-sdk/client-kms": "^3.462.0"
-  },
-  "devDependencies": {
-    "@types/aws-lambda": "8.10.136",
-    "@types/node": "^20.11.19"
-  }
+    "name": "@chat-lambdas-libs/kms",
+    "version": "1.0.0",
+    "license": "MIT",
+    "main": "index.js",
+    "private": true,
+    "dependencies": {
+        "@aws-sdk/client-kms": "^3.462.0"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "8.10.136",
+        "@types/node": "^20.11.19"
+    }
 }

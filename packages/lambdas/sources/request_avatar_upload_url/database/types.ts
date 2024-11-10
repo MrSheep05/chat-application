@@ -1,8 +1,8 @@
 interface GetUserDataResponse {
-  id: string;
-  username: string;
+    id: string;
+    username: string;
 }
 
 export type GetUserDataFn = (
-  connectionId: string,
+    connectionId: string,
 ) => Promise<GetUserDataResponse>;

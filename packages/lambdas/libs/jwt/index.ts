@@ -1,36 +1,38 @@
-import { sign } from "@chat-lambdas-libs/kms";
-import { CreateJWTFn } from "./types";
+import { sign } from '@chat-lambdas-libs/kms';
+import { CreateJWTFn } from './types';
 
 export const createJWT: CreateJWTFn = async ({
-  aliasName,
-  expiresIn,
-  userId,
-  username,
-}) => {
-  const token = await sign(
-    {
-      sub: userId,
-      iss: "chat",
-      username,
-    },
     aliasName,
-    {
-      expiresIn,
-    },
-  );
+    expiresIn,
+    userId,
+    username,
+}) => {
+    const token = await sign(
+        {
+            sub: userId,
+            iss: 'chat',
+            username,
+        },
+        aliasName,
+        {
+            expiresIn,
+        },
+    );
 
-  return token;
+    return token;
 };
 
 export const getTokenPayload = (token: string) => {
-  const [, payload] = token.split(".");
+    const [, payload] = token.split('.');
 
-  return JSON.parse(Buffer.from(payload, "base64url").toString());
+    return JSON.parse(Buffer.from(payload, 'base64url').toString());
 };
 
 export const doSubjectsMatch = (...tokens: string[]) => {
-  const payloads = tokens.map(getTokenPayload);
-  const [firstPayload] = payloads;
+    const payloads = tokens.map(getTokenPayload);
+    const [firstPayload] = payloads;
 
-  return payloads.every(({ sub }) => Boolean(sub) && sub === firstPayload.sub);
+    return payloads.every(
+        ({ sub }) => Boolean(sub) && sub === firstPayload.sub,
+    );
 };

@@ -1,13 +1,13 @@
 {
-  "private": true,
-  "name": "@chat-lambdas/on_avatar_processed",
-  "version": "1.0.0",
-  "license": "MIT",
-  "dependencies": {
-    "@aws-sdk/client-rds": "3.484.0",
-    "@chat-lambdas-libs/database": "1.0.0"
-  },
-  "devDependencies": {
-    "@types/aws-lambda": "8.10.136"
-  }
+    "private": true,
+    "name": "@chat-lambdas/on_avatar_processed",
+    "version": "1.0.0",
+    "license": "MIT",
+    "dependencies": {
+        "@aws-sdk/client-rds": "3.484.0",
+        "@chat-lambdas-libs/database": "1.0.0"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "8.10.136"
+    }
 }

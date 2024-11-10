@@ -1,6 +1,6 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
+import { APIGatewayProxyEvent } from 'aws-lambda';
 
 export type GetDataFromEventFn = (event: APIGatewayProxyEvent) => {
-  token?: string;
-  refreshToken?: string;
+    token?: string;
+    refreshToken?: string;
 };

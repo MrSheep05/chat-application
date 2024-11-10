@@ -1,11 +1,11 @@
 {
-  "name": "@chat-lambdas-libs/jwt",
-  "version": "1.0.0",
-  "license": "MIT",
-  "main": "index.js",
-  "private": true,
-  "dependencies": {
-    "@types/aws-lambda": "8.10.136",
-    "@chat-lambdas-libs/kms": "^1.0.0"
-  }
+    "name": "@chat-lambdas-libs/jwt",
+    "version": "1.0.0",
+    "license": "MIT",
+    "main": "index.js",
+    "private": true,
+    "dependencies": {
+        "@types/aws-lambda": "8.10.136",
+        "@chat-lambdas-libs/kms": "^1.0.0"
+    }
 }
