@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu } from "electron";
+import { BrowserWindow, Menu } from 'electron';
 
 export const setupDevelopmentEnvironment = (window: BrowserWindow) => {
     window.webContents.on('context-menu', (_, props) => {

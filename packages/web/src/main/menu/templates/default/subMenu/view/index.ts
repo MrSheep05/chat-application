@@ -1,6 +1,6 @@
-import { BrowserWindow } from "electron";
-import { DarwinMenuItemConstructorOptions } from "../../../../types";
-import { isDebug } from "../../../../../utils/environmentVariables";
+import { BrowserWindow } from 'electron';
+import { DarwinMenuItemConstructorOptions } from '../../../../types';
+import { isDebug } from '../../../../../utils/environmentVariables';
 
 export const getSubMenuView = (mainWindow: BrowserWindow): DarwinMenuItemConstructorOptions => ({
     label: '&View',

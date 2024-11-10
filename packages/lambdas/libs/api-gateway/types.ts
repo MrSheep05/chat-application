@@ -1,5 +1,5 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
-import { ApiGatewayManagementApiClient } from "@aws-sdk/client-apigatewaymanagementapi";
+import { APIGatewayProxyEvent } from 'aws-lambda';
+import { ApiGatewayManagementApiClient } from '@aws-sdk/client-apigatewaymanagementapi';
 
 export interface ITemplates {
   [code: number]: string;

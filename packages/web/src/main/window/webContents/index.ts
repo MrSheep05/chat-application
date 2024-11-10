@@ -1,4 +1,4 @@
-import { BrowserWindow, shell } from "electron";
+import { BrowserWindow, shell } from 'electron';
 
 export const setWindowOpenHandler = (window: BrowserWindow) => {
     // Open urls in the user's browser

@@ -1,12 +1,12 @@
-import { createResponse } from "@chat-lambdas-libs/response";
-import { middleware } from "@chat-lambdas-libs/logs";
-import { APIGatewayProxyEvent, Handler } from "aws-lambda";
-import { getDataFromEvent } from "./event";
-import { getMessages } from "./database";
+import { createResponse } from '@chat-lambdas-libs/response';
+import { middleware } from '@chat-lambdas-libs/logs';
+import { APIGatewayProxyEvent, Handler } from 'aws-lambda';
+import { getDataFromEvent } from './event';
+import { getMessages } from './database';
 import {
   createAPIGatewayClient,
   postToConnection,
-} from "@chat-lambdas-libs/api-gateway";
+} from '@chat-lambdas-libs/api-gateway';
 
 export const handler: Handler<APIGatewayProxyEvent> = middleware(
   async (event) => {
@@ -20,12 +20,12 @@ export const handler: Handler<APIGatewayProxyEvent> = middleware(
         apiGatewayClient,
         connectionId,
         message: JSON.stringify({
-          action: "getMessages",
+          action: 'getMessages',
           payload: { messages },
         }),
       });
     } catch (error) {
-      console.error("Encountered error:", error);
+      console.error('Encountered error:', error);
       return createResponse({ statusCode: 500 });
     }
 

@@ -1,8 +1,8 @@
-import { Channel } from "../../common/types";
-import { BrowserWindow, ipcMain } from "electron";
-import { onFileDialogEvent } from "./handlers/fileDialog";
-import { onMessage } from "./handlers/message";
-import { onStoreGet, onStoreSet } from "./handlers/store";
+import { Channel } from '../../common/types';
+import { BrowserWindow, ipcMain } from 'electron';
+import { onFileDialogEvent } from './handlers/fileDialog';
+import { onMessage } from './handlers/message';
+import { onStoreGet, onStoreSet } from './handlers/store';
 
 export const listenToIPCEvents = (mainWindow: BrowserWindow) => {
     ipcMain.on(Channel.Message, (_event, args) => onMessage(mainWindow, args));

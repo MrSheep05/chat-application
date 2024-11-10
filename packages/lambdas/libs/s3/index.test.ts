@@ -1,22 +1,22 @@
-import { createPresignedUrl } from ".";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { createPresignedUrl } from '.';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
-jest.mock("@aws-sdk/s3-request-presigner");
-jest.mock("@aws-sdk/client-s3");
+jest.mock('@aws-sdk/s3-request-presigner');
+jest.mock('@aws-sdk/client-s3');
 
-describe("Given createPresignedUrl", () => {
+describe('Given createPresignedUrl', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it("Should create default s3 client", async () => {
+  it('Should create default s3 client', async () => {
     await createPresignedUrl(EXAMPLE_PRESIGNED_URL_PARAMS);
 
-    expect(S3Client).toHaveBeenCalledWith({ region: "eu-west-58" });
+    expect(S3Client).toHaveBeenCalledWith({ region: 'eu-west-58' });
   });
 
-  it("Should create a put object command", async () => {
+  it('Should create a put object command', async () => {
     await createPresignedUrl(EXAMPLE_PRESIGNED_URL_PARAMS);
 
     const { path: key, bucket, metadata } = EXAMPLE_PRESIGNED_URL_PARAMS;
@@ -28,7 +28,7 @@ describe("Given createPresignedUrl", () => {
     });
   });
 
-  it("Should create a presigned url", async () => {
+  it('Should create a presigned url', async () => {
     await createPresignedUrl(EXAMPLE_PRESIGNED_URL_PARAMS);
 
     expect(getSignedUrl).toHaveBeenCalledWith(
@@ -38,27 +38,27 @@ describe("Given createPresignedUrl", () => {
     );
   });
 
-  it("Should return a presigned url", async () => {
-    (getSignedUrl as jest.Mock).mockReturnValue("pre-signed-url");
+  it('Should return a presigned url', async () => {
+    (getSignedUrl as jest.Mock).mockReturnValue('pre-signed-url');
 
     const url = await createPresignedUrl(EXAMPLE_PRESIGNED_URL_PARAMS);
 
-    expect(url).toBe("pre-signed-url");
+    expect(url).toBe('pre-signed-url');
   });
 
-  describe("When the region is not given", () => {
-    it("should default to eu-west-2", async () => {
+  describe('When the region is not given', () => {
+    it('should default to eu-west-2', async () => {
       await createPresignedUrl({
         ...EXAMPLE_PRESIGNED_URL_PARAMS,
         region: undefined,
       });
 
-      expect(S3Client).toHaveBeenCalledWith({ region: "eu-west-2" });
+      expect(S3Client).toHaveBeenCalledWith({ region: 'eu-west-2' });
     });
   });
 
-  describe("When the expirationTime is not given", () => {
-    it("should default to 3600", async () => {
+  describe('When the expirationTime is not given', () => {
+    it('should default to 3600', async () => {
       await createPresignedUrl({
         ...EXAMPLE_PRESIGNED_URL_PARAMS,
         expirationTime: undefined,
@@ -72,8 +72,8 @@ describe("Given createPresignedUrl", () => {
     });
   });
 
-  describe("When the metadata is not given", () => {
-    it("should default to empty object", async () => {
+  describe('When the metadata is not given', () => {
+    it('should default to empty object', async () => {
       await createPresignedUrl({
         ...EXAMPLE_PRESIGNED_URL_PARAMS,
         metadata: {},
@@ -91,12 +91,12 @@ describe("Given createPresignedUrl", () => {
 });
 
 const EXAMPLE_PRESIGNED_URL_PARAMS = {
-  bucket: "bucket-name",
-  path: "/path/to/file.jpg",
+  bucket: 'bucket-name',
+  path: '/path/to/file.jpg',
   expirationTime: 1234,
   metadata: {
-    "Metadata-one": "value-one",
-    "Metadata-two": "value-two",
+    'Metadata-one': 'value-one',
+    'Metadata-two': 'value-two',
   },
-  region: "eu-west-58",
+  region: 'eu-west-58',
 };

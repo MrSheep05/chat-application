@@ -1,11 +1,11 @@
-import { BrowserWindow } from "electron";
+import { BrowserWindow } from 'electron';
 
-import { isDebug } from "../utils/environmentVariables";
-import { installExtensions } from "./extensions";
-import { listenToWindowEvents } from "./events";
-import { loadHTMLDocument } from "./load";
-import { setWindowOpenHandler } from "./webContents";
-import { getAssetPath, getPreloadScriptPath } from "./assets";
+import { isDebug } from '../utils/environmentVariables';
+import { installExtensions } from './extensions';
+import { listenToWindowEvents } from './events';
+import { loadHTMLDocument } from './load';
+import { setWindowOpenHandler } from './webContents';
+import { getAssetPath, getPreloadScriptPath } from './assets';
 
 export const createWindow = async (): Promise<BrowserWindow> => {
     if (isDebug) {

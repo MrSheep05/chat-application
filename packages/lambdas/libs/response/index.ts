@@ -1,13 +1,13 @@
-import { CreateBodyFn, CreateResponseFn, ITemplates } from "./types";
+import { CreateBodyFn, CreateResponseFn, ITemplates } from './types';
 
 const TEMPLATES: ITemplates = {
-  200: "OK",
-  400: "Bad Request",
-  500: "Internal Server Error",
+  200: 'OK',
+  400: 'Bad Request',
+  500: 'Internal Server Error',
 };
 
 const createBody: CreateBodyFn = (statusCode, message) => {
-  if (typeof message === "string") {
+  if (typeof message === 'string') {
     return message;
   }
 
@@ -27,7 +27,7 @@ export const createResponse: CreateResponseFn = ({
   return {
     statusCode,
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      'Access-Control-Allow-Origin': '*',
     },
     body: createBody(statusCode, message),
   };

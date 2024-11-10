@@ -1,6 +1,6 @@
-import { handleFileDialog } from "../../../utils/fileDialog";
-import { Channel } from "../../../../common/types";
-import { IpcMainEvent } from "electron";
+import { handleFileDialog } from '../../../utils/fileDialog';
+import { Channel } from '../../../../common/types';
+import { IpcMainEvent } from 'electron';
 
 export const onFileDialogEvent = async (event: IpcMainEvent, args: any) => {
     const [fileDialogOptions] = args;

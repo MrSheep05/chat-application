@@ -1,5 +1,5 @@
-import { IpcMainEvent } from "electron";
-import { getFromStore, updateStore } from "../../../store";
+import { IpcMainEvent } from 'electron';
+import { getFromStore, updateStore } from '../../../store';
 
 export const onStoreGet = (event: IpcMainEvent, key: any) => {
     event.returnValue = getFromStore(key);

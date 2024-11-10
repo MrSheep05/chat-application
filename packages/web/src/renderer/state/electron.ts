@@ -17,6 +17,7 @@ interface StoreTokensProps {
 
 export const storeTokens = ({ token, refreshToken }: StoreTokensProps) => {
   const { store } = window.electron;
+
   store.set('token', token);
   store.set('refreshToken', refreshToken);
 };
