@@ -26,23 +26,39 @@ export const handler: Handler<S3Event> = middleware(async (event) => {
         });
     }
 
-    const object = await getObject({ bucket, key });
+  const objectBody = await getObject({ bucket, key });
 
-    if (object === null) {
-        throw new Error('Failed to load the file');
-    }
+  if (objectBody === null) {
+    throw new Error("Failed to load the file");
+  }
 
-    const jimpObject = await (await Jimp.fromBuffer(object))
-        .resize({ w: 128, h: 128 })
-        .getBuffer('image/png');
+  const jimpObject = await (await Jimp.read(objectBody as unknown as Buffer))
+    .resize({ w: 128, h: 128 })
+    .getBuffer("image/png");
 
-    const uploadSuccess = await putObject({
-        bucket,
-        key: `users/${uid}`,
-        body: jimpObject,
-    });
+  console.log("jimpObject", { jimpObject });
+
+  const uploadSuccess = await putObject({
+    bucket,
+    key: `users/${uid}`,
+    body: jimpObject,
+  });
 
     if (uploadSuccess === false) {
         throw new Error('Failed to save the resized file');
     }
 });
+
+// const jimp = await Jimp.read(object.Body as Buffer);
+// const buffer = await jimp.resize(width, Jimp.AUTO).getBufferAsync(object.ContentType);
+
+// const originObjectPath = path.parse(key);
+// const copiedObjectKey = `${originObjectPath.dir}/${width}/${originObjectPath.base}`;
+
+// await s3.putObject({
+//     Body: buffer,
+//     Bucket: bucket,
+//     Key: copiedObjectKey,
+//     ACL: 'public-read',
+//     ContentType: object.ContentType
+// }).promise();

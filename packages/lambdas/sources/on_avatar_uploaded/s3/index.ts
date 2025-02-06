@@ -11,12 +11,12 @@ export const getObject: GetObjectFn = async ({ bucket, key }) => {
     const command = new GetObjectCommand({ Bucket: bucket, Key: key });
     const response = await s3.send(command);
 
-    try {
-        return (await response?.Body?.transformToByteArray()) ?? null;
-    } catch (error) {
-        console.error('Error when getting object', { error });
-        return null;
-    }
+  try {
+    return response?.Body ?? null;
+  } catch (error) {
+    console.error("Error when getting object", { error });
+    return null;
+  }
 };
 
 export const putObject: PutObjectFn = async ({ bucket, body, key }) => {
