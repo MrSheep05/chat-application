@@ -2,7 +2,7 @@ import { middleware } from '@chat-lambdas-libs/logs';
 import { createResponse } from '@chat-lambdas-libs/response';
 import { Handler, S3Event } from 'aws-lambda';
 import { getObject, putObject } from './s3';
-import { Jimp } from 'jimp';
+import { Jimp, JimpMime } from 'jimp';
 
 export const handler: Handler<S3Event> = middleware(async (event) => {
     const [firstRecord] = event.Records;
@@ -32,16 +32,18 @@ export const handler: Handler<S3Event> = middleware(async (event) => {
     throw new Error("Failed to load the file");
   }
 
-  const jimpObject = await (await Jimp.read(objectBody as unknown as Buffer))
-    .resize({ w: 128, h: 128 })
-    .getBuffer("image/png");
+  const image = await Jimp.read(objectBody);
 
-  console.log("jimpObject", { jimpObject });
+  image.resize({ w: 128, h: 128 });
+
+  const imageBuffer = await image.getBuffer("image/png");
+
+  console.log("jimpObject", { imageBuffer });
 
   const uploadSuccess = await putObject({
     bucket,
     key: `users/${uid}`,
-    body: jimpObject,
+    body: imageBuffer,
   });
 
     if (uploadSuccess === false) {
