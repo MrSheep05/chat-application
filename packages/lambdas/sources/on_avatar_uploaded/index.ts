@@ -42,7 +42,7 @@ export const handler: Handler<S3Event> = middleware(async (event) => {
 
   const uploadSuccess = await putObject({
     bucket,
-    key: `users/${uid}`,
+    key: `users/${uid}/avatar.png`,
     body: imageBuffer,
   });
 
